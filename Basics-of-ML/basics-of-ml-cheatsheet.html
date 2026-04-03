@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Basics of ML Cheatsheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg: #0f172a;
+        --surface: #1e293b;
+        --primary: #38bdf8;
+        --text: #e2e8f0;
+        --border: #334155;
+    }
+    body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Inter', sans-serif;
+        line-height: 1.7;
+        margin: 0;
+        padding: 40px 20px;
+        display: flex;
+        justify-content: center;
+    }
+    .container {
+        background: var(--surface);
+        max-width: 900px;
+        width: 100%;
+        padding: 50px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    h1, h2, h3 {
+        color: var(--primary);
+    }
+    h1 { font-size: 2.5em; border-bottom: 2px solid var(--border); padding-bottom: 10px; }
+    h2 { font-size: 1.8em; margin-top: 40px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code {
+        font-family: 'Fira Code', monospace;
+        background: #000;
+        color: #a78bfa;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.9em;
+    }
+    pre {
+        background: #000 !important;
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+        border: 1px solid var(--border);
+    }
+    pre code {
+        background: transparent;
+        color: #e2e8f0;
+        padding: 0;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 0.95em;
+    }
+    th, td {
+        padding: 12px 15px;
+        border: 1px solid var(--border);
+        text-align: left;
+    }
+    th {
+        background: #0f172a;
+        color: var(--primary);
+    }
+    tr:nth-child(even) {
+        background: #151f2e;
+    }
+    tr:hover { background: #2dd4bf22; }
+    img { max-width: 100%; border-radius: 8px; }
+    blockquote {
+        border-left: 4px solid var(--primary);
+        margin: 0;
+        padding: 10px 20px;
+        background: rgba(56, 189, 248, 0.1);
+        border-radius: 0 8px 8px 0;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>🤖 Basics of Machine Learning — Cheatsheet</h1>
+<blockquote>
+<p>A comprehensive reference covering ML fundamentals, algorithms, evaluation, and workflows.</p>
+</blockquote>
+<hr />
+<h2>Table of Contents</h2>
+<ol>
+<li><a href="#what-is-machine-learning">What is Machine Learning?</a></li>
+<li><a href="#types-of-machine-learning">Types of ML</a></li>
+<li><a href="#ml-workflow">ML Workflow</a></li>
+<li><a href="#data-preprocessing">Data Preprocessing</a></li>
+<li><a href="#feature-engineering">Feature Engineering</a></li>
+<li><a href="#supervised-learning-algorithms">Supervised Learning Algorithms</a></li>
+<li><a href="#unsupervised-learning-algorithms">Unsupervised Learning Algorithms</a></li>
+<li><a href="#model-evaluation-metrics">Model Evaluation Metrics</a></li>
+<li><a href="#bias-variance-tradeoff">Bias-Variance Tradeoff</a></li>
+<li><a href="#regularization">Regularization</a></li>
+<li><a href="#hyperparameter-tuning">Hyperparameter Tuning</a></li>
+<li><a href="#ensemble-methods">Ensemble Methods</a></li>
+<li><a href="#neural-networks-basics">Neural Networks Basics</a></li>
+<li><a href="#common-python-libraries">Common Libraries</a></li>
+<li><a href="#key-formulas">Key Formulas</a></li>
+</ol>
+<hr />
+<h2>What is Machine Learning?</h2>
+<p>Machine Learning is a subset of Artificial Intelligence where systems <strong>learn patterns from data</strong> to make predictions or decisions <strong>without being explicitly programmed</strong>.</p>
+<pre><code>Traditional Programming:  Data + Rules     → Answers
+Machine Learning:         Data + Answers   → Rules (Model)
+</code></pre>
+<h3>AI vs ML vs DL</h3>
+<pre><code>┌─────────────────────────────────────────┐
+│  Artificial Intelligence (AI)           │
+│  ┌───────────────────────────────────┐  │
+│  │  Machine Learning (ML)            │  │
+│  │  ┌─────────────────────────────┐  │  │
+│  │  │  Deep Learning (DL)         │  │  │
+│  │  │  (Neural Networks)          │  │  │
+│  │  └─────────────────────────────┘  │  │
+│  └───────────────────────────────────┘  │
+└─────────────────────────────────────────┘
+</code></pre>
+<hr />
+<h2>Types of Machine Learning</h2>
+<h3>1. Supervised Learning</h3>
+<p>Learns from <strong>labeled data</strong> (input → known output).</p>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Output Type</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Classification</strong></td>
+<td>Discrete (category)</td>
+<td>Spam detection, image recognition</td>
+</tr>
+<tr>
+<td><strong>Regression</strong></td>
+<td>Continuous (number)</td>
+<td>House price prediction, forecasting</td>
+</tr>
+</tbody>
+</table>
+<h3>2. Unsupervised Learning</h3>
+<p>Discovers patterns in <strong>unlabeled data</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Purpose</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Clustering</strong></td>
+<td>Group similar data</td>
+<td>Customer segmentation</td>
+</tr>
+<tr>
+<td><strong>Dimensionality Reduction</strong></td>
+<td>Reduce features</td>
+<td>PCA, t-SNE</td>
+</tr>
+<tr>
+<td><strong>Association</strong></td>
+<td>Find rules/relationships</td>
+<td>Market basket analysis</td>
+</tr>
+<tr>
+<td><strong>Anomaly Detection</strong></td>
+<td>Find outliers</td>
+<td>Fraud detection</td>
+</tr>
+</tbody>
+</table>
+<h3>3. Semi-Supervised Learning</h3>
+<p>Uses a <strong>small amount of labeled</strong> + <strong>large amount of unlabeled</strong> data.</p>
+<h3>4. Reinforcement Learning</h3>
+<p>Agent learns by <strong>interacting with an environment</strong> and receiving rewards/penalties.</p>
+<ul>
+<li><strong>Agent</strong> takes <strong>actions</strong> in an <strong>environment</strong></li>
+<li>Receives <strong>reward/penalty</strong> signals</li>
+<li>Goal: maximize cumulative reward</li>
+<li>Examples: Game AI, robotics, autonomous driving</li>
+</ul>
+<h3>5. Self-Supervised Learning</h3>
+<p>Model generates its own labels from the data structure (e.g., predicting masked words in BERT).</p>
+<hr />
+<h2>ML Workflow</h2>
+<pre><code>1. Define Problem → 2. Collect Data → 3. Explore (EDA) → 4. Preprocess
+→ 5. Feature Engineering → 6. Split Data → 7. Select Model
+→ 8. Train → 9. Evaluate → 10. Tune Hyperparameters
+→ 11. Final Evaluation → 12. Deploy → 13. Monitor
+</code></pre>
+<h3>Data Splitting</h3>
+<pre><code class="language-python">from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Split</th>
+<th>Typical %</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Training</td>
+<td>60-80%</td>
+<td>Learn patterns</td>
+</tr>
+<tr>
+<td>Validation</td>
+<td>10-20%</td>
+<td>Tune hyperparameters</td>
+</tr>
+<tr>
+<td>Test</td>
+<td>10-20%</td>
+<td>Final unbiased evaluation</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Data Preprocessing</h2>
+<h3>Handling Missing Values</h3>
+<pre><code class="language-python">import pandas as pd
+from sklearn.impute import SimpleImputer
+
+df.isnull().sum()                          # Count missing per column
+df.dropna()                                 # Drop rows with NaN
+df.fillna(df.mean())                        # Fill with mean
+
+imputer = SimpleImputer(strategy='median')  # mean, median, most_frequent
+X = imputer.fit_transform(X)
+</code></pre>
+<h3>Feature Scaling</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Formula</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Standardization</strong></td>
+<td><code>(x - μ) / σ</code></td>
+<td>Normal distribution, SVM, NN</td>
+</tr>
+<tr>
+<td><strong>Min-Max Scaling</strong></td>
+<td><code>(x - min) / (max - min)</code></td>
+<td>Bounded range [0, 1]</td>
+</tr>
+<tr>
+<td><strong>Robust Scaling</strong></td>
+<td><code>(x - median) / IQR</code></td>
+<td>Data with outliers</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-python">from sklearn.preprocessing import StandardScaler, MinMaxScaler
+
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)   # Don't fit on test!
+</code></pre>
+<h3>Encoding Categorical Variables</h3>
+<pre><code class="language-python">from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+
+# Label Encoding (ordinal: low &lt; medium &lt; high)
+le = LabelEncoder()
+df['size_encoded'] = le.fit_transform(df['size'])
+
+# One-Hot Encoding (nominal: red, blue, green)
+df_encoded = pd.get_dummies(df, columns=['color'], drop_first=True)
+</code></pre>
+<hr />
+<h2>Feature Engineering</h2>
+<h3>Common Techniques</h3>
+<table>
+<thead>
+<tr>
+<th>Technique</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Polynomial Features</strong></td>
+<td>Create interaction &amp; power terms (x₁², x₁·x₂)</td>
+</tr>
+<tr>
+<td><strong>Binning</strong></td>
+<td>Convert continuous → categorical (age groups)</td>
+</tr>
+<tr>
+<td><strong>Log Transform</strong></td>
+<td>Reduce skewness in right-skewed data</td>
+</tr>
+<tr>
+<td><strong>Date Decomposition</strong></td>
+<td>Extract year, month, day, day-of-week from dates</td>
+</tr>
+<tr>
+<td><strong>Text Vectorization</strong></td>
+<td>TF-IDF, Bag of Words, embeddings</td>
+</tr>
+<tr>
+<td><strong>Target Encoding</strong></td>
+<td>Replace category with mean of target variable</td>
+</tr>
+</tbody>
+</table>
+<h3>Feature Selection</h3>
+<pre><code class="language-python"># Correlation analysis
+df.corr()['target'].sort_values(ascending=False)
+
+# Variance Threshold — remove low-variance features
+from sklearn.feature_selection import VarianceThreshold
+selector = VarianceThreshold(threshold=0.01)
+
+# SelectKBest — statistical tests
+from sklearn.feature_selection import SelectKBest, f_classif
+selector = SelectKBest(f_classif, k=10)
+X_selected = selector.fit_transform(X, y)
+</code></pre>
+<hr />
+<h2>Supervised Learning Algorithms</h2>
+<h3>Linear Regression</h3>
+<p>Predicts a continuous output using a linear relationship.</p>
+<pre><code>ŷ = w₁x₁ + w₂x₂ + ... + wₙxₙ + b
+</code></pre>
+<pre><code class="language-python">from sklearn.linear_model import LinearRegression
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+predictions = model.predict(X_test)
+model.coef_        # Weights
+model.intercept_   # Bias
+</code></pre>
+<p><strong>Assumptions:</strong> Linear relationship, independence, homoscedasticity, normality of residuals.</p>
+<h3>Logistic Regression</h3>
+<p>Binary/multiclass <strong>classification</strong> using sigmoid function.</p>
+<pre><code>P(y=1|x) = 1 / (1 + e^(-z))    where z = wᵀx + b
+</code></pre>
+<pre><code class="language-python">from sklearn.linear_model import LogisticRegression
+model = LogisticRegression()
+model.fit(X_train, y_train)
+model.predict(X_test)          # Class labels
+model.predict_proba(X_test)    # Probabilities
+</code></pre>
+<h3>Decision Trees</h3>
+<p>Tree-based model that splits data on feature thresholds.</p>
+<pre><code class="language-python">from sklearn.tree import DecisionTreeClassifier
+model = DecisionTreeClassifier(max_depth=5, min_samples_split=10)
+model.fit(X_train, y_train)
+model.feature_importances_   # Feature importance scores
+</code></pre>
+<p><strong>Pros:</strong> Interpretable, no scaling needed, handles non-linear data
+<strong>Cons:</strong> Prone to overfitting, unstable (small data changes → different tree)</p>
+<h3>K-Nearest Neighbors (KNN)</h3>
+<p>Classifies based on k closest training points.</p>
+<pre><code class="language-python">from sklearn.neighbors import KNeighborsClassifier
+model = KNeighborsClassifier(n_neighbors=5, metric='euclidean')
+model.fit(X_train, y_train)
+</code></pre>
+<p><strong>Key:</strong> Choose k wisely (odd for binary), feature scaling is crucial.</p>
+<h3>Support Vector Machines (SVM)</h3>
+<p>Finds the optimal hyperplane that maximizes margin between classes.</p>
+<pre><code class="language-python">from sklearn.svm import SVC
+model = SVC(kernel='rbf', C=1.0, gamma='scale')
+model.fit(X_train, y_train)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Kernel</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>linear</code></td>
+<td>Linearly separable data</td>
+</tr>
+<tr>
+<td><code>rbf</code></td>
+<td>Non-linear data (default, most common)</td>
+</tr>
+<tr>
+<td><code>poly</code></td>
+<td>Polynomial decision boundary</td>
+</tr>
+</tbody>
+</table>
+<h3>Naive Bayes</h3>
+<p>Probabilistic classifier based on Bayes' theorem with independence assumption.</p>
+<pre><code>P(class|features) ∝ P(features|class) × P(class)
+</code></pre>
+<pre><code class="language-python">from sklearn.naive_bayes import GaussianNB, MultinomialNB
+model = GaussianNB()             # Continuous features
+model = MultinomialNB()          # Text/count data
+</code></pre>
+<h3>Algorithm Selection Guide</h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Try First</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Small dataset, linear</td>
+<td>Logistic Regression, SVM (linear)</td>
+</tr>
+<tr>
+<td>Large dataset</td>
+<td>Random Forest, Gradient Boosting</td>
+</tr>
+<tr>
+<td>Text classification</td>
+<td>Naive Bayes, Logistic Regression</td>
+</tr>
+<tr>
+<td>Interpretability needed</td>
+<td>Decision Tree, Logistic Regression</td>
+</tr>
+<tr>
+<td>High-dimensional data</td>
+<td>SVM (rbf), Random Forest</td>
+</tr>
+<tr>
+<td>Regression</td>
+<td>Linear Regression, Random Forest</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Unsupervised Learning Algorithms</h2>
+<h3>K-Means Clustering</h3>
+<p>Partitions data into k clusters by minimizing within-cluster variance.</p>
+<pre><code class="language-python">from sklearn.cluster import KMeans
+kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
+kmeans.fit(X)
+labels = kmeans.labels_
+centers = kmeans.cluster_centers_
+</code></pre>
+<p><strong>Choosing k:</strong> Elbow method (plot inertia vs k), Silhouette score.</p>
+<h3>Principal Component Analysis (PCA)</h3>
+<p>Reduces dimensionality while preserving maximum variance.</p>
+<pre><code class="language-python">from sklearn.decomposition import PCA
+pca = PCA(n_components=2)           # or n_components=0.95 (95% variance)
+X_reduced = pca.fit_transform(X)
+pca.explained_variance_ratio_       # Variance explained per component
+</code></pre>
+<h3>Hierarchical Clustering</h3>
+<p>Builds a tree of clusters (dendrogram).</p>
+<pre><code class="language-python">from sklearn.cluster import AgglomerativeClustering
+model = AgglomerativeClustering(n_clusters=3, linkage='ward')
+labels = model.fit_predict(X)
+</code></pre>
+<h3>DBSCAN</h3>
+<p>Density-based clustering — finds clusters of varying shape, detects outliers.</p>
+<pre><code class="language-python">from sklearn.cluster import DBSCAN
+model = DBSCAN(eps=0.5, min_samples=5)
+labels = model.fit_predict(X)   # -1 = noise/outlier
+</code></pre>
+<hr />
+<h2>Model Evaluation Metrics</h2>
+<h3>Classification Metrics</h3>
+<pre><code class="language-python">from sklearn.metrics import (
+    accuracy_score, precision_score, recall_score,
+    f1_score, confusion_matrix, classification_report,
+    roc_auc_score
+)
+
+accuracy_score(y_true, y_pred)
+precision_score(y_true, y_pred, average='weighted')
+recall_score(y_true, y_pred, average='weighted')
+f1_score(y_true, y_pred, average='weighted')
+confusion_matrix(y_true, y_pred)
+print(classification_report(y_true, y_pred))
+roc_auc_score(y_true, y_prob)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Formula</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Accuracy</strong></td>
+<td>(TP+TN) / Total</td>
+<td>Overall correctness</td>
+</tr>
+<tr>
+<td><strong>Precision</strong></td>
+<td>TP / (TP+FP)</td>
+<td>Of predicted +, how many correct?</td>
+</tr>
+<tr>
+<td><strong>Recall</strong></td>
+<td>TP / (TP+FN)</td>
+<td>Of actual +, how many found?</td>
+</tr>
+<tr>
+<td><strong>F1 Score</strong></td>
+<td>2·(P·R)/(P+R)</td>
+<td>Harmonic mean of P and R</td>
+</tr>
+<tr>
+<td><strong>ROC-AUC</strong></td>
+<td>Area under ROC curve</td>
+<td>Discrimination ability</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Confusion Matrix:</strong></p>
+<pre><code>                  Predicted
+              │  Pos  │  Neg  │
+    ──────────┼───────┼───────┤
+Actual  Pos   │  TP   │  FN   │
+        Neg   │  FP   │  TN   │
+</code></pre>
+<h3>Regression Metrics</h3>
+<pre><code class="language-python">from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+
+mse  = mean_squared_error(y_true, y_pred)
+rmse = mean_squared_error(y_true, y_pred, squared=False)
+mae  = mean_absolute_error(y_true, y_pred)
+r2   = r2_score(y_true, y_pred)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Meaning</th>
+<th>Best Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MSE</strong></td>
+<td>Mean of squared errors</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>RMSE</strong></td>
+<td>Root of MSE (same unit as y)</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>MAE</strong></td>
+<td>Mean of absolute errors</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>R²</strong></td>
+<td>Proportion of variance explained</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+<h3>Cross-Validation</h3>
+<pre><code class="language-python">from sklearn.model_selection import cross_val_score
+
+scores = cross_val_score(model, X, y, cv=5, scoring='accuracy')
+print(f&quot;Mean: {scores.mean():.3f}, Std: {scores.std():.3f}&quot;)
+</code></pre>
+<hr />
+<h2>Bias-Variance Tradeoff</h2>
+<pre><code>Total Error = Bias² + Variance + Irreducible Error
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Bias</th>
+<th>Variance</th>
+<th>Symptom</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Underfitting</strong></td>
+<td>High</td>
+<td>Low</td>
+<td>Poor on train AND test</td>
+<td>More features, complex model</td>
+</tr>
+<tr>
+<td><strong>Good Fit</strong></td>
+<td>Low</td>
+<td>Low</td>
+<td>Good on both</td>
+<td>🎯 Target</td>
+</tr>
+<tr>
+<td><strong>Overfitting</strong></td>
+<td>Low</td>
+<td>High</td>
+<td>Great on train, poor on test</td>
+<td>More data, regularization</td>
+</tr>
+</tbody>
+</table>
+<pre><code>    Error
+    │
+    │  \  Total Error
+    │   \    ___________
+    │    \ /            ── Variance
+    │     X
+    │    / \____________ ── Bias²
+    │   /
+    └──────────────────── Model Complexity
+       Simple → Complex
+</code></pre>
+<hr />
+<h2>Regularization</h2>
+<p>Prevents overfitting by adding a penalty term to the loss function.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Penalty</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>L1 (Lasso)</strong></td>
+<td><code>λ Σ|wᵢ|</code></td>
+<td>Sparse weights (feature selection)</td>
+</tr>
+<tr>
+<td><strong>L2 (Ridge)</strong></td>
+<td><code>λ Σwᵢ²</code></td>
+<td>Small weights (weight decay)</td>
+</tr>
+<tr>
+<td><strong>Elastic Net</strong></td>
+<td>L1 + L2</td>
+<td>Combination of both</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-python">from sklearn.linear_model import Ridge, Lasso, ElasticNet
+
+Ridge(alpha=1.0)        # L2
+Lasso(alpha=1.0)        # L1
+ElasticNet(alpha=1.0, l1_ratio=0.5)
+</code></pre>
+<h3>Other Regularization Techniques</h3>
+<ul>
+<li><strong>Dropout</strong> (neural networks): Randomly disable neurons during training</li>
+<li><strong>Early Stopping</strong>: Stop training when validation error increases</li>
+<li><strong>Data Augmentation</strong>: Generate more training data</li>
+<li><strong>Max Depth / Min Samples</strong> (trees): Limit tree complexity</li>
+</ul>
+<hr />
+<h2>Hyperparameter Tuning</h2>
+<pre><code class="language-python">from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
+
+# Grid Search — exhaustive
+param_grid = {'C': [0.1, 1, 10], 'kernel': ['linear', 'rbf']}
+grid = GridSearchCV(SVC(), param_grid, cv=5, scoring='accuracy')
+grid.fit(X_train, y_train)
+grid.best_params_       # {'C': 1, 'kernel': 'rbf'}
+grid.best_score_        # 0.95
+
+# Randomized Search — faster, samples from distributions
+from scipy.stats import uniform
+param_dist = {'C': uniform(0.1, 10), 'kernel': ['linear', 'rbf']}
+random_search = RandomizedSearchCV(SVC(), param_dist, n_iter=50, cv=5)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Pros</th>
+<th>Cons</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Grid Search</strong></td>
+<td>Exhaustive, thorough</td>
+<td>Slow for large spaces</td>
+</tr>
+<tr>
+<td><strong>Random Search</strong></td>
+<td>Faster, covers wide range</td>
+<td>May miss optimal</td>
+</tr>
+<tr>
+<td><strong>Bayesian Opt</strong></td>
+<td>Smart, efficient</td>
+<td>Complex setup</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Ensemble Methods</h2>
+<p>Combine multiple models for better performance.</p>
+<h3>Bagging (Bootstrap Aggregating)</h3>
+<p>Train models on random subsets → <strong>average</strong> (regression) or <strong>vote</strong> (classification).</p>
+<pre><code class="language-python">from sklearn.ensemble import RandomForestClassifier
+rf = RandomForestClassifier(n_estimators=100, max_depth=10, random_state=42)
+rf.fit(X_train, y_train)
+rf.feature_importances_
+</code></pre>
+<h3>Boosting</h3>
+<p>Train models <strong>sequentially</strong>, each fixing errors of the previous.</p>
+<pre><code class="language-python">from sklearn.ensemble import GradientBoostingClassifier
+# XGBoost (install: pip install xgboost)
+import xgboost as xgb
+model = xgb.XGBClassifier(n_estimators=100, learning_rate=0.1, max_depth=5)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Key Idea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Random Forest</strong></td>
+<td>Bagging + random feature subsets</td>
+</tr>
+<tr>
+<td><strong>AdaBoost</strong></td>
+<td>Boost misclassified samples' weights</td>
+</tr>
+<tr>
+<td><strong>Gradient Boosting</strong></td>
+<td>Fit residuals sequentially</td>
+</tr>
+<tr>
+<td><strong>XGBoost</strong></td>
+<td>Optimized gradient boosting (fast, popular)</td>
+</tr>
+<tr>
+<td><strong>LightGBM</strong></td>
+<td>Leaf-wise growth (very fast)</td>
+</tr>
+<tr>
+<td><strong>CatBoost</strong></td>
+<td>Handles categoricals natively</td>
+</tr>
+<tr>
+<td><strong>Stacking</strong></td>
+<td>Use a meta-model on top of base models</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Neural Networks Basics</h2>
+<h3>Perceptron (Single Neuron)</h3>
+<pre><code>Input → Weighted Sum → Activation Function → Output
+x₁ ──w₁──┐
+x₂ ──w₂──┤→ Σ(wᵢxᵢ + b) → f(z) → ŷ
+x₃ ──w₃──┘
+</code></pre>
+<h3>Common Activation Functions</h3>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Formula</th>
+<th>Range</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sigmoid</strong></td>
+<td>1/(1+e⁻ˣ)</td>
+<td>(0, 1)</td>
+<td>Binary output</td>
+</tr>
+<tr>
+<td><strong>Tanh</strong></td>
+<td>(eˣ-e⁻ˣ)/(eˣ+e⁻ˣ)</td>
+<td>(-1, 1)</td>
+<td>Hidden layers</td>
+</tr>
+<tr>
+<td><strong>ReLU</strong></td>
+<td>max(0, x)</td>
+<td>[0, ∞)</td>
+<td>Hidden layers (default)</td>
+</tr>
+<tr>
+<td><strong>Softmax</strong></td>
+<td>eˣⁱ / Σeˣʲ</td>
+<td>(0, 1)</td>
+<td>Multi-class output</td>
+</tr>
+</tbody>
+</table>
+<h3>Loss Functions</h3>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Loss Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Binary classification</td>
+<td>Binary Cross-Entropy</td>
+</tr>
+<tr>
+<td>Multi-class</td>
+<td>Categorical Cross-Entropy</td>
+</tr>
+<tr>
+<td>Regression</td>
+<td>MSE / MAE</td>
+</tr>
+</tbody>
+</table>
+<h3>Training Process</h3>
+<pre><code>1. Forward Pass    → Compute predictions
+2. Compute Loss    → Compare predictions vs actual
+3. Backward Pass   → Compute gradients (backpropagation)
+4. Update Weights  → Optimizer adjusts weights
+5. Repeat          → Until convergence
+</code></pre>
+<h3>Optimizers</h3>
+<table>
+<thead>
+<tr>
+<th>Optimizer</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SGD</strong></td>
+<td>Basic stochastic gradient descent</td>
+</tr>
+<tr>
+<td><strong>Adam</strong></td>
+<td>Adaptive learning rate (most popular)</td>
+</tr>
+<tr>
+<td><strong>RMSprop</strong></td>
+<td>Adaptive, good for RNNs</td>
+</tr>
+<tr>
+<td><strong>AdaGrad</strong></td>
+<td>Adaptive, good for sparse data</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Common Python Libraries</h2>
+<table>
+<thead>
+<tr>
+<th>Library</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NumPy</strong></td>
+<td>Numerical computing, arrays</td>
+</tr>
+<tr>
+<td><strong>Pandas</strong></td>
+<td>Data manipulation, DataFrames</td>
+</tr>
+<tr>
+<td><strong>Matplotlib</strong></td>
+<td>Basic plotting</td>
+</tr>
+<tr>
+<td><strong>Seaborn</strong></td>
+<td>Statistical visualization</td>
+</tr>
+<tr>
+<td><strong>Scikit-learn</strong></td>
+<td>ML algorithms, preprocessing, evaluation</td>
+</tr>
+<tr>
+<td><strong>XGBoost</strong></td>
+<td>Gradient boosting</td>
+</tr>
+<tr>
+<td><strong>LightGBM</strong></td>
+<td>Fast gradient boosting</td>
+</tr>
+<tr>
+<td><strong>TensorFlow</strong></td>
+<td>Deep learning framework (Google)</td>
+</tr>
+<tr>
+<td><strong>PyTorch</strong></td>
+<td>Deep learning framework (Meta)</td>
+</tr>
+<tr>
+<td><strong>Keras</strong></td>
+<td>High-level DL API (part of TensorFlow)</td>
+</tr>
+<tr>
+<td><strong>Statsmodels</strong></td>
+<td>Statistical modeling</td>
+</tr>
+<tr>
+<td><strong>NLTK/spaCy</strong></td>
+<td>Natural Language Processing</td>
+</tr>
+<tr>
+<td><strong>OpenCV</strong></td>
+<td>Computer Vision</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Key Formulas</h2>
+<h3>Distances</h3>
+<pre><code>Euclidean:     d = √(Σ(xᵢ - yᵢ)²)
+Manhattan:     d = Σ|xᵢ - yᵢ|
+Cosine Sim:    cos(θ) = (x·y) / (||x|| × ||y||)
+</code></pre>
+<h3>Information Theory (Decision Trees)</h3>
+<pre><code>Entropy:       H = -Σ pᵢ log₂(pᵢ)
+Gini Impurity: G = 1 - Σ pᵢ²
+Info Gain:     IG = H(parent) - Σ(weighted H(child))
+</code></pre>
+<h3>Gradient Descent</h3>
+<pre><code>w_new = w_old - α × ∂Loss/∂w
+
+α = learning rate
+- Too large → diverges
+- Too small → slow convergence
+</code></pre>
+<hr />
+<h2>ML Pipeline Example (End-to-End)</h2>
+<pre><code class="language-python">import pandas as pd
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report
+from sklearn.pipeline import Pipeline
+
+# 1. Load data
+df = pd.read_csv(&quot;data.csv&quot;)
+
+# 2. Separate features and target
+X = df.drop(&quot;target&quot;, axis=1)
+y = df[&quot;target&quot;]
+
+# 3. Split
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# 4. Build pipeline
+pipe = Pipeline([
+    ('scaler', StandardScaler()),
+    ('clf', RandomForestClassifier(n_estimators=100, random_state=42))
+])
+
+# 5. Cross-validate
+scores = cross_val_score(pipe, X_train, y_train, cv=5)
+print(f&quot;CV Accuracy: {scores.mean():.3f} ± {scores.std():.3f}&quot;)
+
+# 6. Train &amp; evaluate
+pipe.fit(X_train, y_train)
+y_pred = pipe.predict(X_test)
+print(classification_report(y_test, y_pred))
+</code></pre>
+<hr />
+<h2>Glossary</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Feature</strong></td>
+<td>Input variable (column) used for prediction</td>
+</tr>
+<tr>
+<td><strong>Label/Target</strong></td>
+<td>Output variable to predict</td>
+</tr>
+<tr>
+<td><strong>Instance</strong></td>
+<td>Single data point (row)</td>
+</tr>
+<tr>
+<td><strong>Epoch</strong></td>
+<td>One complete pass through the training data</td>
+</tr>
+<tr>
+<td><strong>Batch Size</strong></td>
+<td>Number of samples per gradient update</td>
+</tr>
+<tr>
+<td><strong>Learning Rate</strong></td>
+<td>Step size for weight updates</td>
+</tr>
+<tr>
+<td><strong>Overfitting</strong></td>
+<td>Model memorizes training data, fails on new data</td>
+</tr>
+<tr>
+<td><strong>Underfitting</strong></td>
+<td>Model is too simple to capture patterns</td>
+</tr>
+<tr>
+<td><strong>Hyperparameter</strong></td>
+<td>Setting configured before training (not learned)</td>
+</tr>
+<tr>
+<td><strong>Gradient</strong></td>
+<td>Direction &amp; magnitude of steepest loss increase</td>
+</tr>
+<tr>
+<td><strong>Inference</strong></td>
+<td>Using a trained model to make predictions</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<blockquote>
+<p><strong>Last Updated:</strong> April 2026</p>
+</blockquote>
+</div>
+</body>
+</html>

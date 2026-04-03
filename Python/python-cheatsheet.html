@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Python Cheatsheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg: #0f172a;
+        --surface: #1e293b;
+        --primary: #38bdf8;
+        --text: #e2e8f0;
+        --border: #334155;
+    }
+    body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Inter', sans-serif;
+        line-height: 1.7;
+        margin: 0;
+        padding: 40px 20px;
+        display: flex;
+        justify-content: center;
+    }
+    .container {
+        background: var(--surface);
+        max-width: 900px;
+        width: 100%;
+        padding: 50px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    h1, h2, h3 {
+        color: var(--primary);
+    }
+    h1 { font-size: 2.5em; border-bottom: 2px solid var(--border); padding-bottom: 10px; }
+    h2 { font-size: 1.8em; margin-top: 40px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code {
+        font-family: 'Fira Code', monospace;
+        background: #000;
+        color: #a78bfa;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.9em;
+    }
+    pre {
+        background: #000 !important;
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+        border: 1px solid var(--border);
+    }
+    pre code {
+        background: transparent;
+        color: #e2e8f0;
+        padding: 0;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 0.95em;
+    }
+    th, td {
+        padding: 12px 15px;
+        border: 1px solid var(--border);
+        text-align: left;
+    }
+    th {
+        background: #0f172a;
+        color: var(--primary);
+    }
+    tr:nth-child(even) {
+        background: #151f2e;
+    }
+    tr:hover { background: #2dd4bf22; }
+    img { max-width: 100%; border-radius: 8px; }
+    blockquote {
+        border-left: 4px solid var(--primary);
+        margin: 0;
+        padding: 10px 20px;
+        background: rgba(56, 189, 248, 0.1);
+        border-radius: 0 8px 8px 0;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>🐍 Python Cheatsheet</h1>
+<blockquote>
+<p>A comprehensive reference guide covering Python fundamentals through advanced concepts.</p>
+</blockquote>
+<hr />
+<h2>Table of Contents</h2>
+<ol>
+<li><a href="#variables--data-types">Variables &amp; Data Types</a></li>
+<li><a href="#operators">Operators</a></li>
+<li><a href="#strings">Strings</a></li>
+<li><a href="#data-structures">Data Structures</a></li>
+<li><a href="#control-flow">Control Flow</a></li>
+<li><a href="#functions">Functions</a></li>
+<li><a href="#object-oriented-programming">OOP</a></li>
+<li><a href="#file-handling">File Handling</a></li>
+<li><a href="#error-handling">Error Handling</a></li>
+<li><a href="#list-comprehensions--generators">Comprehensions &amp; Generators</a></li>
+<li><a href="#decorators">Decorators</a></li>
+<li><a href="#type-hints">Type Hints</a></li>
+<li><a href="#best-practices">Best Practices</a></li>
+</ol>
+<hr />
+<h2>Getting Started</h2>
+<pre><code class="language-bash">python --version        # Check version
+python script.py        # Run script
+python                  # Interactive REPL
+</code></pre>
+<pre><code class="language-python">print(&quot;Hello, World!&quot;)
+
+# Single-line comment
+&quot;&quot;&quot;Multi-line comment / docstring&quot;&quot;&quot;
+</code></pre>
+<hr />
+<h2>Variables &amp; Data Types</h2>
+<pre><code class="language-python">x = 10          # int
+y = 3.14        # float
+name = &quot;Alice&quot;  # str
+flag = True     # bool
+nothing = None  # NoneType
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Example</th>
+<th>Mutable?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>int</code></td>
+<td><code>42</code></td>
+<td>❌</td>
+</tr>
+<tr>
+<td><code>float</code></td>
+<td><code>3.14</code></td>
+<td>❌</td>
+</tr>
+<tr>
+<td><code>str</code></td>
+<td><code>"hello"</code></td>
+<td>❌</td>
+</tr>
+<tr>
+<td><code>bool</code></td>
+<td><code>True / False</code></td>
+<td>❌</td>
+</tr>
+<tr>
+<td><code>list</code></td>
+<td><code>[1, 2, 3]</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>tuple</code></td>
+<td><code>(1, 2, 3)</code></td>
+<td>❌</td>
+</tr>
+<tr>
+<td><code>set</code></td>
+<td><code>{1, 2, 3}</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>dict</code></td>
+<td><code>{"a": 1}</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>NoneType</code></td>
+<td><code>None</code></td>
+<td>❌</td>
+</tr>
+</tbody>
+</table>
+<h3>Type Checking &amp; Conversion</h3>
+<pre><code class="language-python">type(x)              # &lt;class 'int'&gt;
+isinstance(x, int)   # True
+
+int(&quot;10&quot;)       # 10
+float(&quot;3.14&quot;)   # 3.14
+str(42)         # &quot;42&quot;
+bool(0)         # False
+list(&quot;abc&quot;)     # ['a', 'b', 'c']
+</code></pre>
+<h3>Multiple Assignment</h3>
+<pre><code class="language-python">a, b, c = 1, 2, 3
+x = y = z = 0
+a, b = b, a          # Swap
+</code></pre>
+<hr />
+<h2>Operators</h2>
+<pre><code class="language-python"># Arithmetic
+a + b    a - b    a * b    a / b    a // b    a % b    a ** b
+
+# Comparison
+a == b   a != b   a &gt; b    a &lt; b    a &gt;= b    a &lt;= b
+
+# Logical
+a and b   a or b   not a
+
+# Identity &amp; Membership
+x is y        x is not y
+&quot;a&quot; in &quot;abc&quot;  3 in [1, 2, 3]
+
+# Walrus operator (Python 3.8+)
+if (n := len(&quot;hello&quot;)) &gt; 3:
+    print(n)  # 5
+</code></pre>
+<hr />
+<h2>Strings</h2>
+<pre><code class="language-python">s = &quot;Hello, World!&quot;
+
+# Common Methods
+s.upper()    s.lower()    s.title()    s.strip()
+s.replace(&quot;World&quot;, &quot;Python&quot;)    s.split(&quot;, &quot;)
+&quot;, &quot;.join([&quot;a&quot;, &quot;b&quot;])           s.find(&quot;World&quot;)  # 7
+s.startswith(&quot;He&quot;)              s.count(&quot;l&quot;)      # 3
+
+# Slicing
+s[0]       # 'H'       s[-1]     # '!'
+s[0:5]     # 'Hello'   s[::-1]   # reversed
+
+# f-strings (PREFERRED)
+name, age = &quot;Alice&quot;, 30
+f&quot;Name: {name}, Age: {age}&quot;
+f&quot;{3.14159:.2f}&quot;    # '3.14'
+f&quot;{'hi':&gt;10}&quot;       # '        hi'
+</code></pre>
+<hr />
+<h2>Data Structures</h2>
+<h3>Lists</h3>
+<pre><code class="language-python">fruits = [&quot;apple&quot;, &quot;banana&quot;, &quot;cherry&quot;]
+fruits[0]                    # &quot;apple&quot;
+fruits.append(&quot;date&quot;)        # Add to end
+fruits.insert(1, &quot;berry&quot;)    # Insert at index
+fruits.extend([&quot;fig&quot;])       # Add multiple
+fruits.remove(&quot;banana&quot;)      # Remove first match
+fruits.pop()                 # Remove &amp; return last
+fruits.sort()                # Sort in-place
+sorted(fruits)               # Return sorted copy
+len(fruits)                  # Length
+
+# Unpacking
+first, *rest = [1, 2, 3, 4]  # first=1, rest=[2,3,4]
+</code></pre>
+<h3>Tuples</h3>
+<pre><code class="language-python">coords = (10, 20)       # Immutable
+single = (42,)           # Single element needs comma
+
+from collections import namedtuple
+Point = namedtuple(&quot;Point&quot;, [&quot;x&quot;, &quot;y&quot;])
+p = Point(10, 20)       # p.x → 10
+</code></pre>
+<h3>Dictionaries</h3>
+<pre><code class="language-python">person = {&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 30}
+person[&quot;name&quot;]                  # &quot;Alice&quot;
+person.get(&quot;phone&quot;, &quot;N/A&quot;)     # &quot;N/A&quot; (default)
+person[&quot;email&quot;] = &quot;a@b.com&quot;    # Add/update
+person.pop(&quot;age&quot;)               # Remove &amp; return
+person.update({&quot;city&quot;: &quot;NYC&quot;})
+
+for key, val in person.items():
+    print(f&quot;{key}: {val}&quot;)
+
+# Dict comprehension
+squares = {x: x**2 for x in range(6)}
+
+# Merge (Python 3.9+)
+merged = dict1 | dict2
+</code></pre>
+<h3>Sets</h3>
+<pre><code class="language-python">s = {1, 2, 3}
+s.add(4)       s.remove(2)     s.discard(99)
+
+a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+a | b     # Union:        {1,2,3,4,5,6}
+a &amp; b     # Intersection: {3,4}
+a - b     # Difference:   {1,2}
+a ^ b     # Symmetric:    {1,2,5,6}
+</code></pre>
+<h3>Collections Module</h3>
+<pre><code class="language-python">from collections import Counter, defaultdict, deque
+
+Counter(&quot;abracadabra&quot;).most_common(3)  # [('a',5), ('b',2), ('r',2)]
+dd = defaultdict(list); dd[&quot;key&quot;].append(1)
+dq = deque([1,2,3]); dq.appendleft(0); dq.popleft()
+</code></pre>
+<hr />
+<h2>Control Flow</h2>
+<h3>Conditionals</h3>
+<pre><code class="language-python">if x &gt; 0:
+    print(&quot;Positive&quot;)
+elif x == 0:
+    print(&quot;Zero&quot;)
+else:
+    print(&quot;Negative&quot;)
+
+# Ternary
+result = &quot;even&quot; if x % 2 == 0 else &quot;odd&quot;
+
+# Match (Python 3.10+)
+match command:
+    case &quot;quit&quot;: quit()
+    case &quot;hello&quot;: print(&quot;Hi!&quot;)
+    case _: print(&quot;Unknown&quot;)
+</code></pre>
+<h3>Loops</h3>
+<pre><code class="language-python">for i in range(5):          print(i)      # 0-4
+for i in range(1, 10, 2):  print(i)      # 1,3,5,7,9
+for i, item in enumerate([&quot;a&quot;,&quot;b&quot;,&quot;c&quot;]): print(i, item)
+for a, b in zip(list1, list2): print(a, b)
+
+while count &lt; 5:
+    count += 1
+
+# Control: continue (skip), break (exit)
+# for-else: else block runs if loop finishes without break
+</code></pre>
+<hr />
+<h2>Functions</h2>
+<pre><code class="language-python">def greet(name, greeting=&quot;Hello&quot;):
+    &quot;&quot;&quot;Greet a person.&quot;&quot;&quot;
+    return f&quot;{greeting}, {name}!&quot;
+
+# *args and **kwargs
+def func(*args, **kwargs):
+    print(args)     # Tuple
+    print(kwargs)   # Dict
+
+# Return multiple values
+def min_max(lst):
+    return min(lst), max(lst)
+lo, hi = min_max([3, 1, 4])
+
+# Scope
+# nonlocal → enclosing scope
+# global → module-level scope
+</code></pre>
+<hr />
+<h2>Object-Oriented Programming</h2>
+<pre><code class="language-python">class Dog:
+    species = &quot;Canis familiaris&quot;  # Class variable
+
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def bark(self):
+        return f&quot;{self.name} says Woof!&quot;
+
+    def __str__(self):
+        return f&quot;{self.name}, {self.age} yrs&quot;
+
+    @classmethod
+    def from_birth_year(cls, name, year):
+        return cls(name, 2026 - year)
+
+    @staticmethod
+    def is_valid_age(age):
+        return 0 &lt;= age &lt;= 30
+
+    @property
+    def human_age(self):
+        return self.age * 7
+
+# Inheritance
+class GuideDog(Dog):
+    def __init__(self, name, age, handler):
+        super().__init__(name, age)
+        self.handler = handler
+</code></pre>
+<h3>Dataclasses (Python 3.7+)</h3>
+<pre><code class="language-python">from dataclasses import dataclass, field
+
+@dataclass
+class Employee:
+    name: str
+    age: int
+    department: str = &quot;Engineering&quot;
+    skills: list = field(default_factory=list)
+</code></pre>
+<h3>Key Dunder Methods</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Trigger</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>__init__</code></td>
+<td>Constructor</td>
+</tr>
+<tr>
+<td><code>__str__</code></td>
+<td><code>str(obj)</code></td>
+</tr>
+<tr>
+<td><code>__repr__</code></td>
+<td><code>repr(obj)</code></td>
+</tr>
+<tr>
+<td><code>__len__</code></td>
+<td><code>len(obj)</code></td>
+</tr>
+<tr>
+<td><code>__getitem__</code></td>
+<td><code>obj[key]</code></td>
+</tr>
+<tr>
+<td><code>__iter__</code></td>
+<td><code>for x in obj</code></td>
+</tr>
+<tr>
+<td><code>__call__</code></td>
+<td><code>obj()</code></td>
+</tr>
+<tr>
+<td><code>__eq__</code></td>
+<td><code>obj == other</code></td>
+</tr>
+<tr>
+<td><code>__enter__/__exit__</code></td>
+<td><code>with obj:</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>File Handling</h2>
+<pre><code class="language-python"># Read
+with open(&quot;file.txt&quot;, &quot;r&quot;) as f:
+    content = f.read()
+
+# Write (&quot;w&quot; overwrites, &quot;a&quot; appends)
+with open(&quot;file.txt&quot;, &quot;w&quot;) as f:
+    f.write(&quot;Hello!\n&quot;)
+
+# pathlib (modern)
+from pathlib import Path
+p = Path(&quot;data&quot;) / &quot;file.txt&quot;
+p.read_text()
+p.write_text(&quot;Hello&quot;)
+list(Path(&quot;.&quot;).rglob(&quot;*.py&quot;))
+
+# JSON
+import json
+data = json.loads('{&quot;key&quot;: &quot;val&quot;}')
+json.dumps(data, indent=2)
+</code></pre>
+<hr />
+<h2>Error Handling</h2>
+<pre><code class="language-python">try:
+    result = 10 / 0
+except ZeroDivisionError as e:
+    print(f&quot;Error: {e}&quot;)
+except (ValueError, TypeError):
+    print(&quot;Value or Type error&quot;)
+else:
+    print(&quot;Success — no exception&quot;)
+finally:
+    print(&quot;Always runs&quot;)
+
+raise ValueError(&quot;Invalid!&quot;)
+
+# Custom exception
+class MyError(Exception):
+    pass
+
+# Assertions
+assert x &gt; 0, &quot;x must be positive&quot;
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Exception</th>
+<th>Cause</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ValueError</code></td>
+<td>Wrong value</td>
+</tr>
+<tr>
+<td><code>TypeError</code></td>
+<td>Wrong type</td>
+</tr>
+<tr>
+<td><code>KeyError</code></td>
+<td>Key not found in dict</td>
+</tr>
+<tr>
+<td><code>IndexError</code></td>
+<td>Index out of range</td>
+</tr>
+<tr>
+<td><code>FileNotFoundError</code></td>
+<td>File not found</td>
+</tr>
+<tr>
+<td><code>ZeroDivisionError</code></td>
+<td>Division by zero</td>
+</tr>
+<tr>
+<td><code>AttributeError</code></td>
+<td>Attribute not found</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>List Comprehensions &amp; Generators</h2>
+<pre><code class="language-python"># List comprehension
+[x**2 for x in range(10)]
+[x for x in range(20) if x % 2 == 0]
+[n for row in matrix for n in row]  # Flatten
+
+# Dict &amp; set comprehension
+{word: len(word) for word in words}
+{len(w) for w in words}
+
+# Generator (lazy, memory-efficient)
+gen = (x**2 for x in range(1000000))
+next(gen)
+
+def fibonacci():
+    a, b = 0, 1
+    while True:
+        yield a
+        a, b = b, a + b
+</code></pre>
+<hr />
+<h2>Decorators</h2>
+<pre><code class="language-python">from functools import wraps
+
+def timer(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        import time
+        start = time.time()
+        result = func(*args, **kwargs)
+        print(f&quot;{func.__name__}: {time.time()-start:.4f}s&quot;)
+        return result
+    return wrapper
+
+@timer
+def slow(): import time; time.sleep(1)
+
+# Decorator with arguments
+def repeat(n):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            for _ in range(n): result = func(*args, **kwargs)
+            return result
+        return wrapper
+    return decorator
+
+@repeat(3)
+def hello(): print(&quot;Hi!&quot;)
+
+# Built-in: @staticmethod, @classmethod, @property
+# functools: @lru_cache, @cached_property
+</code></pre>
+<hr />
+<h2>Lambda, Map, Filter, Reduce</h2>
+<pre><code class="language-python">square = lambda x: x ** 2
+
+list(map(lambda x: x**2, [1,2,3]))           # [1, 4, 9]
+list(filter(lambda x: x &gt; 0, [-1, 0, 1, 2])) # [1, 2]
+
+from functools import reduce
+reduce(lambda a, b: a + b, [1,2,3,4])         # 10
+
+# Prefer comprehensions:
+[x**2 for x in [1,2,3]]           # replaces map
+[x for x in [-1,0,1] if x &gt; 0]    # replaces filter
+</code></pre>
+<hr />
+<h2>Virtual Environments &amp; Packages</h2>
+<pre><code class="language-bash">python -m venv myenv
+myenv\Scripts\activate       # Windows
+source myenv/bin/activate    # macOS/Linux
+deactivate
+
+pip install package_name
+pip install -r requirements.txt
+pip freeze &gt; requirements.txt
+pip list
+</code></pre>
+<hr />
+<h2>Type Hints</h2>
+<pre><code class="language-python">def greet(name: str) -&gt; str:
+    return f&quot;Hello, {name}&quot;
+
+def process(items: list[int]) -&gt; dict[str, int]:   # 3.9+
+    return {&quot;total&quot;: sum(items)}
+
+from typing import Optional, Union, Callable
+
+def find(name: str) -&gt; Optional[str]: ...           # str | None
+def parse(val: str | int) -&gt; float: ...             # 3.10+
+def apply(fn: Callable[[int, int], int], a: int, b: int) -&gt; int:
+    return fn(a, b)
+</code></pre>
+<hr />
+<h2>Useful Built-in Functions</h2>
+<pre><code class="language-python">abs(-5)  round(3.7)  min(1,2,3)  max(1,2,3)  sum([1,2,3])
+len(x)  sorted(x)  reversed(x)  enumerate(x)  zip(a, b)
+any(iterable)  all(iterable)  map(fn, it)  filter(fn, it)
+type(x)  isinstance(x, int)  dir(obj)  hasattr(obj, &quot;name&quot;)
+id(obj)  hash(obj)  callable(obj)  help(fn)
+input(&quot;Enter: &quot;)  print(&quot;hi&quot;, end=&quot;&quot;, sep=&quot;, &quot;)
+</code></pre>
+<hr />
+<h2>Best Practices (PEP 8)</h2>
+<ul>
+<li><strong>4 spaces</strong> indentation, <strong>79 char</strong> max line length</li>
+<li><code>snake_case</code> functions/variables, <code>PascalCase</code> classes, <code>UPPER_CASE</code> constants</li>
+<li>Use <code>in</code> for containment: <code>if key in my_dict</code></li>
+<li>Use <code>enumerate()</code> not <code>range(len(...))</code></li>
+<li>Use <code>with</code> for file handling</li>
+<li>Use f-strings for formatting</li>
+<li>Prefer EAFP: <code>try/except</code> over checking conditions</li>
+<li>Truthiness: <code>if items:</code> not <code>if len(items) &gt; 0</code></li>
+<li>Chained comparisons: <code>0 &lt; x &lt; 10</code></li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>Last Updated:</strong> April 2026 | <strong>Python 3.12+</strong></p>
+</blockquote>
+</div>
+</body>
+</html>

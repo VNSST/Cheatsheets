@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Generative AI Cheatsheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg: #0f172a;
+        --surface: #1e293b;
+        --primary: #38bdf8;
+        --text: #e2e8f0;
+        --border: #334155;
+    }
+    body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Inter', sans-serif;
+        line-height: 1.7;
+        margin: 0;
+        padding: 40px 20px;
+        display: flex;
+        justify-content: center;
+    }
+    .container {
+        background: var(--surface);
+        max-width: 900px;
+        width: 100%;
+        padding: 50px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    h1, h2, h3 {
+        color: var(--primary);
+    }
+    h1 { font-size: 2.5em; border-bottom: 2px solid var(--border); padding-bottom: 10px; }
+    h2 { font-size: 1.8em; margin-top: 40px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code {
+        font-family: 'Fira Code', monospace;
+        background: #000;
+        color: #a78bfa;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.9em;
+    }
+    pre {
+        background: #000 !important;
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+        border: 1px solid var(--border);
+    }
+    pre code {
+        background: transparent;
+        color: #e2e8f0;
+        padding: 0;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 0.95em;
+    }
+    th, td {
+        padding: 12px 15px;
+        border: 1px solid var(--border);
+        text-align: left;
+    }
+    th {
+        background: #0f172a;
+        color: var(--primary);
+    }
+    tr:nth-child(even) {
+        background: #151f2e;
+    }
+    tr:hover { background: #2dd4bf22; }
+    img { max-width: 100%; border-radius: 8px; }
+    blockquote {
+        border-left: 4px solid var(--primary);
+        margin: 0;
+        padding: 10px 20px;
+        background: rgba(56, 189, 248, 0.1);
+        border-radius: 0 8px 8px 0;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>🧠 Generative AI — Cheatsheet</h1>
+<blockquote>
+<p>A comprehensive reference covering GenAI foundations, architectures, prompting, fine-tuning, and applications.</p>
+</blockquote>
+<hr />
+<h2>Table of Contents</h2>
+<ol>
+<li><a href="#what-is-generative-ai">What is Generative AI?</a></li>
+<li><a href="#key-concepts">Key Concepts</a></li>
+<li><a href="#foundation-models--architectures">Foundation Models &amp; Architectures</a></li>
+<li><a href="#transformer-architecture">Transformer Architecture</a></li>
+<li><a href="#large-language-models-llms">Large Language Models (LLMs)</a></li>
+<li><a href="#prompt-engineering">Prompt Engineering</a></li>
+<li><a href="#retrieval-augmented-generation-rag">Retrieval-Augmented Generation (RAG)</a></li>
+<li><a href="#fine-tuning-techniques">Fine-Tuning Techniques</a></li>
+<li><a href="#image-generation">Image Generation</a></li>
+<li><a href="#evaluation--safety">Evaluation &amp; Safety</a></li>
+<li><a href="#genai-application-stack">GenAI Application Stack</a></li>
+<li><a href="#key-models-directory">Key Models Directory</a></li>
+<li><a href="#tools--frameworks">Tools &amp; Frameworks</a></li>
+<li><a href="#glossary">Glossary</a></li>
+</ol>
+<hr />
+<h2>What is Generative AI?</h2>
+<p>Generative AI refers to AI systems that can <strong>create new content</strong> — text, images, code, audio, video — by learning patterns from training data.</p>
+<pre><code>Discriminative AI:  Input → &quot;Is this a cat or dog?&quot;   (classifies)
+Generative AI:      Prompt → &quot;Generate an image of a cat&quot;  (creates)
+</code></pre>
+<h3>GenAI Timeline</h3>
+<table>
+<thead>
+<tr>
+<th>Year</th>
+<th>Milestone</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2014</td>
+<td>GANs introduced (Goodfellow)</td>
+</tr>
+<tr>
+<td>2017</td>
+<td>Transformer architecture ("Attention Is All You Need")</td>
+</tr>
+<tr>
+<td>2018</td>
+<td>GPT-1, BERT released</td>
+</tr>
+<tr>
+<td>2020</td>
+<td>GPT-3 (175B parameters)</td>
+</tr>
+<tr>
+<td>2021</td>
+<td>DALL-E, Codex</td>
+</tr>
+<tr>
+<td>2022</td>
+<td>ChatGPT, Stable Diffusion, Midjourney</td>
+</tr>
+<tr>
+<td>2023</td>
+<td>GPT-4, LLaMA, Claude, Gemini, Mixtral</td>
+</tr>
+<tr>
+<td>2024</td>
+<td>GPT-4o, Claude 3.5, Gemini 1.5, open-weight boom</td>
+</tr>
+<tr>
+<td>2025</td>
+<td>Reasoning models, multi-modal agents, Gemini 2.0</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Key Concepts</h2>
+<h3>Tokens</h3>
+<p>The basic unit of text processing. Words are split into subword tokens.</p>
+<pre><code>&quot;Hello world&quot;     → [&quot;Hello&quot;, &quot; world&quot;]          (2 tokens)
+&quot;Unbelievable&quot;    → [&quot;Un&quot;, &quot;believ&quot;, &quot;able&quot;]      (3 tokens)
+
+Rule of thumb: 1 token ≈ 4 characters ≈ ¾ of a word
+</code></pre>
+<h3>Context Window</h3>
+<p>The maximum number of tokens a model can process at once (input + output).</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Context Window</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPT-3.5</td>
+<td>4K – 16K tokens</td>
+</tr>
+<tr>
+<td>GPT-4o</td>
+<td>128K tokens</td>
+</tr>
+<tr>
+<td>Claude 3.5 Sonnet</td>
+<td>200K tokens</td>
+</tr>
+<tr>
+<td>Gemini 1.5 Pro</td>
+<td>1M – 2M tokens</td>
+</tr>
+<tr>
+<td>Llama 3</td>
+<td>8K – 128K tokens</td>
+</tr>
+</tbody>
+</table>
+<h3>Temperature &amp; Sampling</h3>
+<p>Controls randomness/creativity in output generation.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Low Value</th>
+<th>High Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Temperature</strong></td>
+<td>Deterministic, focused</td>
+<td>Creative, diverse</td>
+</tr>
+<tr>
+<td><strong>Top-p (nucleus)</strong></td>
+<td>Fewer token choices</td>
+<td>More token choices</td>
+</tr>
+<tr>
+<td><strong>Top-k</strong></td>
+<td>Only top k tokens</td>
+<td>Wider selection</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-python"># Example API call
+response = client.chat.completions.create(
+    model=&quot;gpt-4o&quot;,
+    messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Write a poem&quot;}],
+    temperature=0.7,     # 0.0 = deterministic, 2.0 = very random
+    top_p=0.9,           # Nucleus sampling
+    max_tokens=500
+)
+</code></pre>
+<h3>Embeddings</h3>
+<p>Dense vector representations of text that capture semantic meaning.</p>
+<pre><code class="language-python"># Similar meanings → similar vectors
+embed(&quot;king&quot;) - embed(&quot;man&quot;) + embed(&quot;woman&quot;) ≈ embed(&quot;queen&quot;)
+
+# Use cases: semantic search, clustering, recommendations
+</code></pre>
+<hr />
+<h2>Foundation Models &amp; Architectures</h2>
+<h3>Types of Models</h3>
+<table>
+<thead>
+<tr>
+<th>Architecture</th>
+<th>Training Objective</th>
+<th>Examples</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Encoder-only</strong></td>
+<td>Masked token prediction</td>
+<td>BERT, RoBERTa</td>
+<td>Classification, NER</td>
+</tr>
+<tr>
+<td><strong>Decoder-only</strong></td>
+<td>Next token prediction</td>
+<td>GPT, LLaMA, Mistral</td>
+<td>Text generation</td>
+</tr>
+<tr>
+<td><strong>Encoder-Decoder</strong></td>
+<td>Seq-to-seq</td>
+<td>T5, BART</td>
+<td>Translation, summary</td>
+</tr>
+<tr>
+<td><strong>Diffusion</strong></td>
+<td>Denoising</td>
+<td>Stable Diffusion, DALL-E</td>
+<td>Image generation</td>
+</tr>
+<tr>
+<td><strong>GAN</strong></td>
+<td>Generator vs discriminator</td>
+<td>StyleGAN</td>
+<td>Image synthesis</td>
+</tr>
+<tr>
+<td><strong>VAE</strong></td>
+<td>Variational encoding</td>
+<td>VQ-VAE</td>
+<td>Image generation</td>
+</tr>
+</tbody>
+</table>
+<h3>Model Sizes</h3>
+<pre><code>Parameters = Weights the model learns during training
+
+Small:    &lt; 1B parameters    (efficient, edge deployment)
+Medium:   1B – 13B           (good balance)
+Large:    13B – 70B          (high capability)
+Frontier: 70B+               (best performance)
+</code></pre>
+<hr />
+<h2>Transformer Architecture</h2>
+<p>The backbone of modern GenAI, introduced in "Attention Is All You Need" (2017).</p>
+<h3>Core Components</h3>
+<pre><code>Input → Tokenization → Embedding + Positional Encoding
+  → [Attention → Feed-Forward → Layer Norm] × N layers
+  → Output Projection → Token Probabilities
+</code></pre>
+<h3>Self-Attention Mechanism</h3>
+<pre><code>Attention(Q, K, V) = softmax(QKᵀ / √dₖ) × V
+
+Q = Query   (what am I looking for?)
+K = Key     (what do I contain?)
+V = Value   (what information do I provide?)
+dₖ = dimension of keys (scaling factor)
+</code></pre>
+<h3>Multi-Head Attention</h3>
+<pre><code>MultiHead(Q, K, V) = Concat(head₁, head₂, ..., headₕ) × Wᴼ
+
+Each head learns different relationships:
+  - Head 1: Subject-verb agreement
+  - Head 2: Coreference resolution
+  - Head 3: Positional relationships
+</code></pre>
+<h3>Key Innovations</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Self-Attention</strong></td>
+<td>Relate every token to every other token</td>
+</tr>
+<tr>
+<td><strong>Multi-Head Attention</strong></td>
+<td>Learn multiple types of relationships</td>
+</tr>
+<tr>
+<td><strong>Positional Encoding</strong></td>
+<td>Preserve word order information</td>
+</tr>
+<tr>
+<td><strong>Layer Normalization</strong></td>
+<td>Stabilize training</td>
+</tr>
+<tr>
+<td><strong>Residual Connections</strong></td>
+<td>Enable deep networks</td>
+</tr>
+<tr>
+<td><strong>Feed-Forward Networks</strong></td>
+<td>Process each position independently</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Large Language Models (LLMs)</h2>
+<h3>How LLMs Work</h3>
+<pre><code>Training:    Massive text corpus → Learn next-token prediction
+Inference:   Prompt → Generate tokens one at a time (autoregressive)
+
+&quot;The cat sat on the&quot; → P(mat)=0.3, P(roof)=0.2, P(chair)=0.15 ...
+</code></pre>
+<h3>Pre-training → Fine-tuning → Alignment Pipeline</h3>
+<pre><code>1. Pre-training (unsupervised)
+   └─ Next token prediction on massive text data
+   └─ Internet text, books, code (trillions of tokens)
+
+2. Supervised Fine-Tuning (SFT)
+   └─ Train on curated instruction→response pairs
+   └─ Makes model follow instructions
+
+3. Alignment (RLHF / DPO / RLAIF)
+   └─ Reinforcement Learning from Human Feedback
+   └─ Makes model helpful, harmless, honest
+</code></pre>
+<h3>Capabilities</h3>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Text Generation</strong></td>
+<td>Essays, stories, emails, code</td>
+</tr>
+<tr>
+<td><strong>Summarization</strong></td>
+<td>Condense long documents</td>
+</tr>
+<tr>
+<td><strong>Translation</strong></td>
+<td>Between languages</td>
+</tr>
+<tr>
+<td><strong>Q&amp;A</strong></td>
+<td>Answer questions from context</td>
+</tr>
+<tr>
+<td><strong>Reasoning</strong></td>
+<td>Multi-step logic problems</td>
+</tr>
+<tr>
+<td><strong>Code Generation</strong></td>
+<td>Write, debug, explain code</td>
+</tr>
+<tr>
+<td><strong>Conversation</strong></td>
+<td>Multi-turn dialogue</td>
+</tr>
+<tr>
+<td><strong>Analysis</strong></td>
+<td>Sentiment, classification, extraction</td>
+</tr>
+</tbody>
+</table>
+<h3>Limitations</h3>
+<ul>
+<li><strong>Hallucination</strong> — generates plausible but false information</li>
+<li><strong>Knowledge cutoff</strong> — no info beyond training data date</li>
+<li><strong>Context limits</strong> — finite window size</li>
+<li><strong>Bias</strong> — reflects biases in training data</li>
+<li><strong>No real understanding</strong> — pattern matching, not reasoning (debated)</li>
+<li><strong>Expensive</strong> — large compute costs</li>
+</ul>
+<hr />
+<h2>Prompt Engineering</h2>
+<h3>Prompt Structure</h3>
+<pre><code>[System Message]     — Sets behavior, role, constraints
+[Context/Examples]   — Background info, few-shot examples
+[User Instruction]   — The actual task/question
+[Output Format]      — How to structure the response
+</code></pre>
+<h3>Core Techniques</h3>
+<h4>Zero-Shot</h4>
+<pre><code>Classify the sentiment of this review as positive, negative, or neutral:
+&quot;The movie was absolutely breathtaking!&quot; → 
+</code></pre>
+<h4>Few-Shot</h4>
+<pre><code>Classify sentiment:
+&quot;Great product!&quot; → Positive
+&quot;Terrible service.&quot; → Negative
+&quot;It was okay.&quot; → Neutral
+&quot;The movie was absolutely breathtaking!&quot; →
+</code></pre>
+<h4>Chain-of-Thought (CoT)</h4>
+<pre><code>Q: If a store has 45 apples and sells 3/5 of them, how many remain?
+A: Let me think step by step.
+   - Total apples: 45
+   - Sold: 3/5 × 45 = 27
+   - Remaining: 45 - 27 = 18
+   The answer is 18.
+</code></pre>
+<h4>System Prompts</h4>
+<pre><code>You are a professional data scientist. When answering:
+- Use precise technical language.
+- Always include code examples in Python.
+- Cite your reasoning.
+- If unsure, say so rather than guessing.
+</code></pre>
+<h3>Advanced Techniques</h3>
+<table>
+<thead>
+<tr>
+<th>Technique</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ReAct</strong></td>
+<td>Reasoning + Acting (think → act → observe)</td>
+</tr>
+<tr>
+<td><strong>Tree of Thought</strong></td>
+<td>Explore multiple reasoning paths</td>
+</tr>
+<tr>
+<td><strong>Self-Consistency</strong></td>
+<td>Generate multiple answers, take majority vote</td>
+</tr>
+<tr>
+<td><strong>Structured Output</strong></td>
+<td>Request JSON, XML, or specific formats</td>
+</tr>
+<tr>
+<td><strong>Role Prompting</strong></td>
+<td>Assign an expert persona</td>
+</tr>
+<tr>
+<td><strong>Constraint Setting</strong></td>
+<td>Define boundaries and rules</td>
+</tr>
+</tbody>
+</table>
+<h3>Prompt Best Practices</h3>
+<pre><code>✅ Be specific and clear
+✅ Provide examples when possible
+✅ Break complex tasks into steps
+✅ Specify output format explicitly
+✅ Use delimiters (```, ---, ###) to separate sections
+✅ Include relevant context
+✅ Iterate and refine
+
+❌ Vague instructions (&quot;make it better&quot;)
+❌ Overly complex single prompts
+❌ Assuming model has current information
+❌ Ignoring output format specification
+</code></pre>
+<hr />
+<h2>Retrieval-Augmented Generation (RAG)</h2>
+<p>RAG combines LLMs with external knowledge retrieval to generate grounded, up-to-date responses.</p>
+<h3>RAG Pipeline</h3>
+<pre><code>1. Document Ingestion
+   └─ Load documents → Chunk text → Generate embeddings → Store in vector DB
+
+2. Query Time
+   └─ User query → Embed query → Search vector DB → Retrieve top-k chunks
+
+3. Generation
+   └─ Combine: [System prompt + Retrieved chunks + User query] → LLM → Response
+</code></pre>
+<h3>Key Components</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Options</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Embedding Model</strong></td>
+<td>OpenAI, Cohere, Sentence-Transformers, Gemini</td>
+</tr>
+<tr>
+<td><strong>Vector Database</strong></td>
+<td>Pinecone, Weaviate, ChromaDB, Qdrant, FAISS</td>
+</tr>
+<tr>
+<td><strong>Chunking</strong></td>
+<td>Fixed-size, semantic, recursive text splitting</td>
+</tr>
+<tr>
+<td><strong>Reranking</strong></td>
+<td>Cohere Rerank, cross-encoders</td>
+</tr>
+<tr>
+<td><strong>LLM</strong></td>
+<td>GPT-4o, Claude, Gemini, Llama</td>
+</tr>
+</tbody>
+</table>
+<h3>RAG Code Example</h3>
+<pre><code class="language-python">from langchain.document_loaders import PyPDFLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.vectorstores import ChromaDB
+from langchain.chains import RetrievalQA
+
+# 1. Load &amp; chunk
+loader = PyPDFLoader(&quot;document.pdf&quot;)
+docs = loader.load()
+splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+chunks = splitter.split_documents(docs)
+
+# 2. Embed &amp; store
+embeddings = OpenAIEmbeddings()
+vectorstore = ChromaDB.from_documents(chunks, embeddings)
+
+# 3. Query
+retriever = vectorstore.as_retriever(search_kwargs={&quot;k&quot;: 5})
+qa_chain = RetrievalQA.from_chain_type(llm=llm, retriever=retriever)
+answer = qa_chain.run(&quot;What is the main finding?&quot;)
+</code></pre>
+<h3>RAG vs Fine-Tuning</h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>RAG</th>
+<th>Fine-Tuning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Knowledge</strong></td>
+<td>External, dynamic</td>
+<td>Baked into weights</td>
+</tr>
+<tr>
+<td><strong>Cost</strong></td>
+<td>Low (no training)</td>
+<td>High (GPU training)</td>
+</tr>
+<tr>
+<td><strong>Freshness</strong></td>
+<td>Always up-to-date</td>
+<td>Snapshot at training time</td>
+</tr>
+<tr>
+<td><strong>Hallucination</strong></td>
+<td>Reduced (grounded)</td>
+<td>Still possible</td>
+</tr>
+<tr>
+<td><strong>Best For</strong></td>
+<td>Knowledge-heavy Q&amp;A</td>
+<td>Style/behavior adaptation</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Fine-Tuning Techniques</h2>
+<h3>Full Fine-Tuning</h3>
+<p>Train all parameters on task-specific data. Expensive but powerful.</p>
+<h3>Parameter-Efficient Fine-Tuning (PEFT)</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+<th>Parameters Modified</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>LoRA</strong></td>
+<td>Low-Rank Adaptation — inject small matrices</td>
+<td>~0.1-1% of total</td>
+</tr>
+<tr>
+<td><strong>QLoRA</strong></td>
+<td>LoRA on quantized model (4-bit)</td>
+<td>~0.1% + quantized</td>
+</tr>
+<tr>
+<td><strong>Prefix Tuning</strong></td>
+<td>Learn virtual token prefixes</td>
+<td>~0.1%</td>
+</tr>
+<tr>
+<td><strong>Adapters</strong></td>
+<td>Insert small modules between layers</td>
+<td>~1-5%</td>
+</tr>
+</tbody>
+</table>
+<h3>LoRA Explained</h3>
+<pre><code>Original layer:  y = Wx
+
+LoRA modification:  y = Wx + BAx
+  where B (d×r) and A (r×d), r &lt;&lt; d
+
+Only A and B are trained (rank r ≈ 4-64)
+Drastically reduces trainable parameters
+</code></pre>
+<h3>RLHF (Reinforcement Learning from Human Feedback)</h3>
+<pre><code>1. Collect human preferences on model outputs
+2. Train a Reward Model on those preferences
+3. Use PPO/DPO to optimize the LLM against the Reward Model
+</code></pre>
+<h3>DPO (Direct Preference Optimization)</h3>
+<p>Simpler alternative to RLHF — directly optimize from preference pairs without a separate reward model.</p>
+<hr />
+<h2>Image Generation</h2>
+<h3>Diffusion Models</h3>
+<pre><code>Forward Process:   Image → Add noise gradually → Pure noise
+Reverse Process:   Pure noise → Denoise step by step → Image
+
+Training: Learn to predict/remove noise at each step
+Inference: Start from random noise, iteratively denoise
+</code></pre>
+<h3>Text-to-Image Models</h3>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Organization</th>
+<th>Key Feature</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DALL-E 3</strong></td>
+<td>OpenAI</td>
+<td>High quality, safety filters</td>
+</tr>
+<tr>
+<td><strong>Stable Diffusion</strong></td>
+<td>Stability AI</td>
+<td>Open-source, highly customizable</td>
+</tr>
+<tr>
+<td><strong>Midjourney</strong></td>
+<td>Midjourney</td>
+<td>Artistic, high aesthetic quality</td>
+</tr>
+<tr>
+<td><strong>Imagen 3</strong></td>
+<td>Google</td>
+<td>Photorealistic, text rendering</td>
+</tr>
+<tr>
+<td><strong>Flux</strong></td>
+<td>Black Forest</td>
+<td>Open, high quality</td>
+</tr>
+</tbody>
+</table>
+<h3>Other Modalities</h3>
+<table>
+<thead>
+<tr>
+<th>Modality</th>
+<th>Models / Tools</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Video</strong></td>
+<td>Sora, Runway Gen-3, Kling, Veo</td>
+</tr>
+<tr>
+<td><strong>Audio/Music</strong></td>
+<td>Suno, Udio, MusicLM</td>
+</tr>
+<tr>
+<td><strong>Speech</strong></td>
+<td>ElevenLabs, Bark, XTTS</td>
+</tr>
+<tr>
+<td><strong>3D</strong></td>
+<td>Point-E, Shape-E, Meshy</td>
+</tr>
+<tr>
+<td><strong>Code</strong></td>
+<td>Codex, Copilot, Cursor, Codeium</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Evaluation &amp; Safety</h2>
+<h3>LLM Evaluation Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>What It Measures</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Perplexity</strong></td>
+<td>How surprised the model is (lower = better)</td>
+</tr>
+<tr>
+<td><strong>BLEU</strong></td>
+<td>N-gram overlap with reference (translation)</td>
+</tr>
+<tr>
+<td><strong>ROUGE</strong></td>
+<td>Recall of reference n-grams (summarization)</td>
+</tr>
+<tr>
+<td><strong>BERTScore</strong></td>
+<td>Semantic similarity using embeddings</td>
+</tr>
+<tr>
+<td><strong>Human Eval</strong></td>
+<td>Pass@k for code generation</td>
+</tr>
+<tr>
+<td><strong>MMLU</strong></td>
+<td>Multi-task language understanding benchmark</td>
+</tr>
+<tr>
+<td><strong>HumanEval</strong></td>
+<td>Human preference rankings</td>
+</tr>
+</tbody>
+</table>
+<h3>Safety &amp; Responsible AI</h3>
+<table>
+<thead>
+<tr>
+<th>Concern</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Hallucination</strong></td>
+<td>Generating false/fabricated information</td>
+</tr>
+<tr>
+<td><strong>Bias</strong></td>
+<td>Reinforcing stereotypes from training data</td>
+</tr>
+<tr>
+<td><strong>Privacy</strong></td>
+<td>Memorizing/leaking training data</td>
+</tr>
+<tr>
+<td><strong>Misuse</strong></td>
+<td>Deepfakes, spam, disinformation</td>
+</tr>
+<tr>
+<td><strong>Copyright</strong></td>
+<td>Training on copyrighted content</td>
+</tr>
+<tr>
+<td><strong>Environmental</strong></td>
+<td>Large compute carbon footprint</td>
+</tr>
+</tbody>
+</table>
+<h3>Mitigation Strategies</h3>
+<ul>
+<li><strong>Guardrails</strong>: Input/output filtering, content moderation</li>
+<li><strong>RLHF/Constitutional AI</strong>: Align with human values</li>
+<li><strong>Watermarking</strong>: Mark AI-generated content</li>
+<li><strong>Red Teaming</strong>: Adversarial testing for vulnerabilities</li>
+<li><strong>Transparency</strong>: Disclose when AI-generated</li>
+<li><strong>Grounding</strong>: Use RAG to reduce hallucination</li>
+</ul>
+<hr />
+<h2>GenAI Application Stack</h2>
+<pre><code>┌─────────────────────────────────────────┐
+│          User Interface                 │  Chat, API, plugins
+├─────────────────────────────────────────┤
+│       Application Layer                 │  Orchestration, agents
+├─────────────────────────────────────────┤
+│       RAG / Memory / Tools              │  Vector DB, search, APIs
+├─────────────────────────────────────────┤
+│       Model Layer                       │  LLM, embeddings, vision
+├─────────────────────────────────────────┤
+│       Infrastructure                    │  GPU cloud, serving, MLOps
+└─────────────────────────────────────────┘
+</code></pre>
+<hr />
+<h2>Key Models Directory</h2>
+<h3>Proprietary Models</h3>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Provider</th>
+<th>Strengths</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPT-4o</td>
+<td>OpenAI</td>
+<td>Multi-modal, strong reasoning</td>
+</tr>
+<tr>
+<td>Claude 3.5</td>
+<td>Anthropic</td>
+<td>Long context, safety-focused</td>
+</tr>
+<tr>
+<td>Gemini 1.5/2.0</td>
+<td>Google</td>
+<td>Massive context, multi-modal</td>
+</tr>
+<tr>
+<td>Command R+</td>
+<td>Cohere</td>
+<td>Enterprise RAG, multilingual</td>
+</tr>
+</tbody>
+</table>
+<h3>Open-Weight Models</h3>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Provider</th>
+<th>Sizes</th>
+<th>Strengths</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Llama 3</td>
+<td>Meta</td>
+<td>8B, 70B, 405B</td>
+<td>Versatile, strong base</td>
+</tr>
+<tr>
+<td>Mistral/Mixtral</td>
+<td>Mistral</td>
+<td>7B, 8×7B, 8×22B</td>
+<td>Efficient, MoE</td>
+</tr>
+<tr>
+<td>Gemma 2</td>
+<td>Google</td>
+<td>2B, 9B, 27B</td>
+<td>Efficient, high quality</td>
+</tr>
+<tr>
+<td>Qwen 2.5</td>
+<td>Alibaba</td>
+<td>0.5B–72B</td>
+<td>Multilingual, coding</td>
+</tr>
+<tr>
+<td>Phi-3/4</td>
+<td>Microsoft</td>
+<td>3.8B, 14B</td>
+<td>Small but capable</td>
+</tr>
+<tr>
+<td>DeepSeek V3/R1</td>
+<td>DeepSeek</td>
+<td>67B, 685B MoE</td>
+<td>Reasoning, math</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Tools &amp; Frameworks</h2>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>LangChain</strong></td>
+<td>LLM application framework (chains, agents)</td>
+</tr>
+<tr>
+<td><strong>LlamaIndex</strong></td>
+<td>Data framework for RAG</td>
+</tr>
+<tr>
+<td><strong>Hugging Face</strong></td>
+<td>Model hub, Transformers library</td>
+</tr>
+<tr>
+<td><strong>OpenAI API</strong></td>
+<td>GPT, DALL-E, Whisper access</td>
+</tr>
+<tr>
+<td><strong>Google AI Studio</strong></td>
+<td>Gemini access and prototyping</td>
+</tr>
+<tr>
+<td><strong>Ollama</strong></td>
+<td>Run open models locally</td>
+</tr>
+<tr>
+<td><strong>vLLM</strong></td>
+<td>Fast LLM serving</td>
+</tr>
+<tr>
+<td><strong>Weights &amp; Biases</strong></td>
+<td>Experiment tracking</td>
+</tr>
+<tr>
+<td><strong>Gradio</strong></td>
+<td>Quick ML demos / UI</td>
+</tr>
+<tr>
+<td><strong>Streamlit</strong></td>
+<td>Data app framework</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Glossary</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Token</strong></td>
+<td>Smallest unit of text processed by a model</td>
+</tr>
+<tr>
+<td><strong>Embedding</strong></td>
+<td>Dense vector representation of data</td>
+</tr>
+<tr>
+<td><strong>Attention</strong></td>
+<td>Mechanism to weigh relevance of input parts</td>
+</tr>
+<tr>
+<td><strong>Transformer</strong></td>
+<td>Architecture using self-attention</td>
+</tr>
+<tr>
+<td><strong>Fine-tuning</strong></td>
+<td>Adapting a pre-trained model to a specific task</td>
+</tr>
+<tr>
+<td><strong>Inference</strong></td>
+<td>Using a trained model to generate outputs</td>
+</tr>
+<tr>
+<td><strong>Hallucination</strong></td>
+<td>Model generating false information confidently</td>
+</tr>
+<tr>
+<td><strong>Grounding</strong></td>
+<td>Connecting model output to verified sources</td>
+</tr>
+<tr>
+<td><strong>Context window</strong></td>
+<td>Max tokens a model can process at once</td>
+</tr>
+<tr>
+<td><strong>Foundation model</strong></td>
+<td>Large model trained on broad data, adaptable</td>
+</tr>
+<tr>
+<td><strong>RLHF</strong></td>
+<td>Training with human preference feedback</td>
+</tr>
+<tr>
+<td><strong>LoRA</strong></td>
+<td>Parameter-efficient fine-tuning via low-rank matrices</td>
+</tr>
+<tr>
+<td><strong>RAG</strong></td>
+<td>Combining retrieval with generation</td>
+</tr>
+<tr>
+<td><strong>Multi-modal</strong></td>
+<td>Processing multiple data types (text+image+audio)</td>
+</tr>
+<tr>
+<td><strong>Quantization</strong></td>
+<td>Reducing model precision (FP32→INT8/INT4)</td>
+</tr>
+<tr>
+<td><strong>MoE</strong></td>
+<td>Mixture of Experts — activate subset of parameters</td>
+</tr>
+<tr>
+<td><strong>Distillation</strong></td>
+<td>Training a small model to mimic a large one</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<blockquote>
+<p><strong>Last Updated:</strong> April 2026</p>
+</blockquote>
+</div>
+</body>
+</html>

@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Data Science Cheatsheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg: #0f172a;
+        --surface: #1e293b;
+        --primary: #38bdf8;
+        --text: #e2e8f0;
+        --border: #334155;
+    }
+    body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Inter', sans-serif;
+        line-height: 1.7;
+        margin: 0;
+        padding: 40px 20px;
+        display: flex;
+        justify-content: center;
+    }
+    .container {
+        background: var(--surface);
+        max-width: 900px;
+        width: 100%;
+        padding: 50px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    h1, h2, h3 {
+        color: var(--primary);
+    }
+    h1 { font-size: 2.5em; border-bottom: 2px solid var(--border); padding-bottom: 10px; }
+    h2 { font-size: 1.8em; margin-top: 40px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code {
+        font-family: 'Fira Code', monospace;
+        background: #000;
+        color: #a78bfa;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.9em;
+    }
+    pre {
+        background: #000 !important;
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+        border: 1px solid var(--border);
+    }
+    pre code {
+        background: transparent;
+        color: #e2e8f0;
+        padding: 0;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 0.95em;
+    }
+    th, td {
+        padding: 12px 15px;
+        border: 1px solid var(--border);
+        text-align: left;
+    }
+    th {
+        background: #0f172a;
+        color: var(--primary);
+    }
+    tr:nth-child(even) {
+        background: #151f2e;
+    }
+    tr:hover { background: #2dd4bf22; }
+    img { max-width: 100%; border-radius: 8px; }
+    blockquote {
+        border-left: 4px solid var(--primary);
+        margin: 0;
+        padding: 10px 20px;
+        background: rgba(56, 189, 248, 0.1);
+        border-radius: 0 8px 8px 0;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>📊 Data Science — Cheatsheet</h1>
+<blockquote>
+<p>A comprehensive reference covering the Data Science lifecycle, tools, statistics, EDA, visualization, and best practices.</p>
+</blockquote>
+<hr />
+<h2>Table of Contents</h2>
+<ol>
+<li><a href="#what-is-data-science">What is Data Science?</a></li>
+<li><a href="#data-science-lifecycle">Data Science Lifecycle</a></li>
+<li><a href="#statistics-fundamentals">Statistics Fundamentals</a></li>
+<li><a href="#probability-basics">Probability Basics</a></li>
+<li><a href="#numpy-essentials">NumPy Essentials</a></li>
+<li><a href="#pandas-essentials">Pandas Essentials</a></li>
+<li><a href="#exploratory-data-analysis-eda">Exploratory Data Analysis (EDA)</a></li>
+<li><a href="#data-visualization">Data Visualization</a></li>
+<li><a href="#data-cleaning">Data Cleaning</a></li>
+<li><a href="#feature-engineering">Feature Engineering</a></li>
+<li><a href="#sql-for-data-science">SQL for Data Science</a></li>
+<li><a href="#common-data-formats">Common Data Formats</a></li>
+<li><a href="#tools--ecosystem">Tools &amp; Ecosystem</a></li>
+</ol>
+<hr />
+<h2>What is Data Science?</h2>
+<p>Data Science is an interdisciplinary field that uses <strong>statistics, computing, and domain expertise</strong> to extract actionable insights from structured and unstructured data.</p>
+<pre><code>┌──────────────────────────────────────────┐
+│             DATA SCIENCE                 │
+│                                          │
+│    Math/Stats ∩ CS/Programming           │
+│              ∩                           │
+│       Domain Knowledge                   │
+│                                          │
+│  Statistics · ML · Visualization         │
+│  Data Engineering · Communication        │
+└──────────────────────────────────────────┘
+</code></pre>
+<h3>Data Science vs Related Fields</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Focus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data Science</strong></td>
+<td>End-to-end insight extraction &amp; prediction</td>
+</tr>
+<tr>
+<td><strong>Data Analytics</strong></td>
+<td>Descriptive analysis, dashboards, BI</td>
+</tr>
+<tr>
+<td><strong>Data Engineering</strong></td>
+<td>Pipelines, infrastructure, ETL</td>
+</tr>
+<tr>
+<td><strong>Machine Learning</strong></td>
+<td>Predictive model building</td>
+</tr>
+<tr>
+<td><strong>Statistics</strong></td>
+<td>Inference, hypothesis testing</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Data Science Lifecycle</h2>
+<pre><code>1. Problem Definition     → What question are we answering?
+2. Data Collection        → APIs, databases, web scraping, files
+3. Data Cleaning          → Handle missing/inconsistent data
+4. Exploratory Analysis   → Understand distributions &amp; relationships
+5. Feature Engineering    → Create meaningful variables
+6. Modeling               → Train ML models
+7. Evaluation             → Validate performance
+8. Communication          → Visualize &amp; present findings
+9. Deployment             → Put model into production
+10. Monitoring            → Track performance over time
+</code></pre>
+<hr />
+<h2>Statistics Fundamentals</h2>
+<h3>Descriptive Statistics</h3>
+<pre><code class="language-python">import numpy as np
+import pandas as pd
+
+data = [12, 15, 18, 22, 25, 28, 30, 35, 40, 100]
+
+np.mean(data)       # Mean (average): 32.5
+np.median(data)     # Median (middle value): 26.5
+# Mode: most frequent (use scipy.stats.mode)
+np.std(data)        # Standard deviation
+np.var(data)        # Variance
+np.percentile(data, [25, 50, 75])  # Quartiles
+
+# Pandas describe
+df['col'].describe()   # count, mean, std, min, 25%, 50%, 75%, max
+</code></pre>
+<h3>Measures of Central Tendency</h3>
+<table>
+<thead>
+<tr>
+<th>Measure</th>
+<th>Best For</th>
+<th>Sensitive to Outliers?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Mean</strong></td>
+<td>Symmetric distributions</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td><strong>Median</strong></td>
+<td>Skewed data, outliers present</td>
+<td>❌ No</td>
+</tr>
+<tr>
+<td><strong>Mode</strong></td>
+<td>Categorical data</td>
+<td>❌ No</td>
+</tr>
+</tbody>
+</table>
+<h3>Measures of Spread</h3>
+<table>
+<thead>
+<tr>
+<th>Measure</th>
+<th>Formula / Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Range</strong></td>
+<td>max - min</td>
+</tr>
+<tr>
+<td><strong>Variance (σ²)</strong></td>
+<td>Average squared deviation from mean</td>
+</tr>
+<tr>
+<td><strong>Std Deviation (σ)</strong></td>
+<td>√Variance — same units as data</td>
+</tr>
+<tr>
+<td><strong>IQR</strong></td>
+<td>Q3 - Q1 (middle 50%)</td>
+</tr>
+<tr>
+<td><strong>Coefficient of Variation</strong></td>
+<td>(σ / μ) × 100%</td>
+</tr>
+</tbody>
+</table>
+<h3>Distributions</h3>
+<table>
+<thead>
+<tr>
+<th>Distribution</th>
+<th>Type</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Normal</strong></td>
+<td>Continuous</td>
+<td>Natural phenomena, errors</td>
+</tr>
+<tr>
+<td><strong>Binomial</strong></td>
+<td>Discrete</td>
+<td>Success/failure in n trials</td>
+</tr>
+<tr>
+<td><strong>Poisson</strong></td>
+<td>Discrete</td>
+<td>Events per time interval</td>
+</tr>
+<tr>
+<td><strong>Uniform</strong></td>
+<td>Both</td>
+<td>Equal probability</td>
+</tr>
+<tr>
+<td><strong>Exponential</strong></td>
+<td>Continuous</td>
+<td>Time between events</td>
+</tr>
+<tr>
+<td><strong>Log-Normal</strong></td>
+<td>Continuous</td>
+<td>Income, stock prices</td>
+</tr>
+</tbody>
+</table>
+<h3>The Normal Distribution (Gaussian)</h3>
+<pre><code>68-95-99.7 Rule:
+  68%  of data within ± 1σ of mean
+  95%  of data within ± 2σ of mean
+  99.7% of data within ± 3σ of mean
+</code></pre>
+<h3>Hypothesis Testing</h3>
+<pre><code>1. State null hypothesis H₀ (no effect) and alternative H₁
+2. Choose significance level α (typically 0.05)
+3. Compute test statistic
+4. Find p-value
+5. If p-value &lt; α → reject H₀
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>t-test</strong></td>
+<td>Compare means of two groups</td>
+</tr>
+<tr>
+<td><strong>Chi-squared</strong></td>
+<td>Test independence of categorical vars</td>
+</tr>
+<tr>
+<td><strong>ANOVA</strong></td>
+<td>Compare means of 3+ groups</td>
+</tr>
+<tr>
+<td><strong>Pearson r</strong></td>
+<td>Linear correlation between two variables</td>
+</tr>
+<tr>
+<td><strong>Mann-Whitney U</strong></td>
+<td>Non-parametric comparison of two groups</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-python">from scipy import stats
+
+# t-test (two independent samples)
+t_stat, p_val = stats.ttest_ind(group_a, group_b)
+
+# Chi-squared test
+chi2, p_val, dof, expected = stats.chi2_contingency(contingency_table)
+
+# Pearson correlation
+r, p_val = stats.pearsonr(x, y)
+</code></pre>
+<h3>Correlation vs Causation</h3>
+<blockquote>
+<p><strong>Correlation ≠ Causation.</strong> Two variables can be correlated without one causing the other. Always consider confounding variables, reverse causality, and coincidence.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Correlation Value</th>
+<th>Strength</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.0 – 0.3</td>
+<td>Weak</td>
+</tr>
+<tr>
+<td>0.3 – 0.7</td>
+<td>Moderate</td>
+</tr>
+<tr>
+<td>0.7 – 1.0</td>
+<td>Strong</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Probability Basics</h2>
+<pre><code>P(A)              = Probability of event A
+P(A ∩ B)          = Probability of A AND B
+P(A ∪ B)          = P(A) + P(B) - P(A ∩ B)
+P(A|B)            = P(A ∩ B) / P(B)            — Conditional
+P(A) × P(B)       = P(A ∩ B)                   — If independent
+
+Bayes' Theorem:
+P(A|B) = P(B|A) × P(A) / P(B)
+</code></pre>
+<hr />
+<h2>NumPy Essentials</h2>
+<pre><code class="language-python">import numpy as np
+
+# Array creation
+arr = np.array([1, 2, 3, 4, 5])
+zeros = np.zeros((3, 4))          # 3×4 matrix of zeros
+ones = np.ones((2, 3))            # 2×3 matrix of ones
+rng = np.arange(0, 10, 2)         # [0, 2, 4, 6, 8]
+lin = np.linspace(0, 1, 5)        # 5 evenly spaced points
+rand = np.random.randn(3, 3)     # 3×3 standard normal
+
+# Properties
+arr.shape     arr.dtype     arr.ndim     arr.size
+
+# Indexing &amp; slicing
+arr[0]      arr[-1]     arr[1:4]    arr[::2]
+matrix[0, :]            # First row
+matrix[:, 0]            # First column
+
+# Operations (element-wise)
+arr + 10     arr * 2     arr ** 2     np.sqrt(arr)
+np.dot(a, b)   a @ b    # Matrix multiplication
+
+# Aggregations
+arr.sum()    arr.mean()   arr.std()   arr.min()   arr.max()
+arr.argmax()             # Index of max value
+np.cumsum(arr)           # Cumulative sum
+
+# Reshaping
+arr.reshape(5, 1)        # Reshape
+arr.flatten()            # To 1D
+arr.T                    # Transpose
+
+# Boolean indexing
+arr[arr &gt; 3]             # Elements &gt; 3
+np.where(arr &gt; 3, arr, 0)  # Conditional replacement
+</code></pre>
+<hr />
+<h2>Pandas Essentials</h2>
+<h3>DataFrame Basics</h3>
+<pre><code class="language-python">import pandas as pd
+
+# Create
+df = pd.DataFrame({
+    'name': ['Alice', 'Bob', 'Charlie'],
+    'age': [25, 30, 35],
+    'salary': [50000, 60000, 70000]
+})
+
+# Load data
+df = pd.read_csv('data.csv')
+df = pd.read_excel('data.xlsx')
+df = pd.read_json('data.json')
+df = pd.read_sql('SELECT * FROM table', connection)
+
+# Save
+df.to_csv('output.csv', index=False)
+
+# Inspection
+df.head()       df.tail()       df.shape
+df.info()       df.describe()   df.dtypes
+df.columns      df.index        df.nunique()
+df.value_counts('col')
+</code></pre>
+<h3>Selection &amp; Filtering</h3>
+<pre><code class="language-python">df['name']                   # Single column (Series)
+df[['name', 'age']]          # Multiple columns (DataFrame)
+df.loc[0]                    # Row by label
+df.iloc[0]                   # Row by position
+df.loc[0:2, 'name':'age']   # Label-based slicing
+df.iloc[0:3, 0:2]           # Position-based slicing
+
+# Filtering
+df[df['age'] &gt; 25]
+df[(df['age'] &gt; 25) &amp; (df['salary'] &gt; 55000)]
+df[df['name'].isin(['Alice', 'Bob'])]
+df.query('age &gt; 25 and salary &gt; 55000')
+</code></pre>
+<h3>Data Manipulation</h3>
+<pre><code class="language-python"># Add/modify columns
+df['bonus'] = df['salary'] * 0.1
+df['senior'] = df['age'].apply(lambda x: x &gt; 30)
+
+# Sorting
+df.sort_values('age', ascending=False)
+df.sort_values(['age', 'salary'], ascending=[True, False])
+
+# Renaming
+df.rename(columns={'name': 'full_name'}, inplace=True)
+
+# Drop
+df.drop(columns=['bonus'])
+df.drop(index=[0, 1])
+
+# GroupBy
+df.groupby('department')['salary'].mean()
+df.groupby('department').agg({'salary': ['mean', 'max'], 'age': 'count'})
+
+# Pivot Table
+pd.pivot_table(df, values='salary', index='department',
+               columns='gender', aggfunc='mean')
+
+# Merge / Join
+pd.merge(df1, df2, on='id', how='left')    # left, right, inner, outer
+pd.concat([df1, df2], axis=0)               # Stack vertically
+
+# Apply functions
+df['age_group'] = df['age'].apply(lambda x: 'young' if x &lt; 30 else 'senior')
+df['name_len'] = df['name'].str.len()
+</code></pre>
+<h3>Handling Missing Data</h3>
+<pre><code class="language-python">df.isnull().sum()                      # Count nulls per column
+df.dropna()                            # Drop rows with any NaN
+df.dropna(subset=['age'])              # Drop where 'age' is NaN
+df['age'].fillna(df['age'].median())   # Fill with median
+df.interpolate()                       # Interpolate missing values
+df.ffill()                             # Forward fill
+df.bfill()                             # Backward fill
+</code></pre>
+<h3>String Operations</h3>
+<pre><code class="language-python">df['name'].str.lower()
+df['name'].str.upper()
+df['name'].str.contains('Ali')
+df['name'].str.replace('a', 'A')
+df['name'].str.split(' ')
+df['name'].str.strip()
+df['name'].str.len()
+</code></pre>
+<h3>Date Operations</h3>
+<pre><code class="language-python">df['date'] = pd.to_datetime(df['date'])
+df['year'] = df['date'].dt.year
+df['month'] = df['date'].dt.month
+df['day_of_week'] = df['date'].dt.day_name()
+df.set_index('date').resample('M').mean()   # Monthly average
+</code></pre>
+<hr />
+<h2>Exploratory Data Analysis (EDA)</h2>
+<h3>EDA Checklist</h3>
+<pre><code>☐  Shape: How many rows/columns?
+☐  Data types: Are they correct?
+☐  Missing values: How many? Pattern?
+☐  Duplicates: Any duplicate rows?
+☐  Distributions: Normal? Skewed? Outliers?
+☐  Correlations: Which features are related?
+☐  Target variable: Balanced classes? Range?
+☐  Cardinality: Unique values per categorical feature?
+</code></pre>
+<h3>Quick EDA Code</h3>
+<pre><code class="language-python"># Shape &amp; types
+print(f&quot;Shape: {df.shape}&quot;)
+print(df.dtypes)
+print(df.describe(include='all'))
+
+# Missing values
+print(df.isnull().sum().sort_values(ascending=False))
+print(f&quot;Missing %:\n{df.isnull().mean() * 100}&quot;)
+
+# Duplicates
+print(f&quot;Duplicates: {df.duplicated().sum()}&quot;)
+df.drop_duplicates(inplace=True)
+
+# Correlations
+corr_matrix = df.select_dtypes(include='number').corr()
+
+# Outliers (IQR method)
+Q1, Q3 = df['col'].quantile([0.25, 0.75])
+IQR = Q3 - Q1
+outliers = df[(df['col'] &lt; Q1 - 1.5*IQR) | (df['col'] &gt; Q3 + 1.5*IQR)]
+</code></pre>
+<hr />
+<h2>Data Visualization</h2>
+<h3>Matplotlib</h3>
+<pre><code class="language-python">import matplotlib.pyplot as plt
+
+# Line plot
+plt.plot(x, y, color='blue', linestyle='--', marker='o')
+plt.xlabel('X'); plt.ylabel('Y'); plt.title('Title')
+plt.legend(); plt.grid(True); plt.show()
+
+# Subplots
+fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+axes[0].plot(x, y)
+axes[1].bar(categories, values)
+plt.tight_layout(); plt.show()
+</code></pre>
+<h3>Seaborn</h3>
+<pre><code class="language-python">import seaborn as sns
+
+sns.histplot(df['age'], bins=20, kde=True)     # Histogram + KDE
+sns.boxplot(x='dept', y='salary', data=df)     # Box plot
+sns.scatterplot(x='age', y='salary', hue='gender', data=df)
+sns.heatmap(corr_matrix, annot=True, cmap='coolwarm')  # Correlation
+sns.countplot(x='category', data=df)           # Bar count
+sns.pairplot(df, hue='target')                 # Pair plot
+sns.violinplot(x='dept', y='salary', data=df)  # Violin plot
+</code></pre>
+<h3>When to Use Which Chart</h3>
+<table>
+<thead>
+<tr>
+<th>Chart Type</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Line</strong></td>
+<td>Trends over time</td>
+</tr>
+<tr>
+<td><strong>Bar</strong></td>
+<td>Comparing categories</td>
+</tr>
+<tr>
+<td><strong>Histogram</strong></td>
+<td>Distribution of continuous variable</td>
+</tr>
+<tr>
+<td><strong>Box Plot</strong></td>
+<td>Distribution + outliers</td>
+</tr>
+<tr>
+<td><strong>Scatter</strong></td>
+<td>Relationship between two variables</td>
+</tr>
+<tr>
+<td><strong>Heatmap</strong></td>
+<td>Correlation matrix, 2D distributions</td>
+</tr>
+<tr>
+<td><strong>Pie</strong></td>
+<td>Proportions (use sparingly)</td>
+</tr>
+<tr>
+<td><strong>Violin</strong></td>
+<td>Distribution shape comparison</td>
+</tr>
+<tr>
+<td><strong>Pair Plot</strong></td>
+<td>All pairwise relationships</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Data Cleaning</h2>
+<h3>Common Issues &amp; Solutions</h3>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Detection</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Missing values</td>
+<td><code>df.isnull().sum()</code></td>
+<td>Impute, drop, flag</td>
+</tr>
+<tr>
+<td>Duplicates</td>
+<td><code>df.duplicated().sum()</code></td>
+<td><code>df.drop_duplicates()</code></td>
+</tr>
+<tr>
+<td>Wrong data types</td>
+<td><code>df.dtypes</code></td>
+<td><code>df.astype()</code>, <code>pd.to_numeric</code></td>
+</tr>
+<tr>
+<td>Outliers</td>
+<td>Box plots, IQR, Z-score</td>
+<td>Cap, remove, transform</td>
+</tr>
+<tr>
+<td>Inconsistent formats</td>
+<td><code>df['col'].unique()</code></td>
+<td><code>str.strip().lower()</code></td>
+</tr>
+<tr>
+<td>Incorrect values</td>
+<td>Domain knowledge</td>
+<td>Replace, remove</td>
+</tr>
+<tr>
+<td>Mixed types in column</td>
+<td><code>df['col'].apply(type).unique()</code></td>
+<td>Convert or split</td>
+</tr>
+</tbody>
+</table>
+<h3>Outlier Detection</h3>
+<pre><code class="language-python"># Z-score method
+from scipy import stats
+z_scores = np.abs(stats.zscore(df['col']))
+outliers = df[z_scores &gt; 3]
+
+# IQR method
+Q1, Q3 = df['col'].quantile([0.25, 0.75])
+IQR = Q3 - Q1
+mask = (df['col'] &gt;= Q1 - 1.5*IQR) &amp; (df['col'] &lt;= Q3 + 1.5*IQR)
+df_clean = df[mask]
+</code></pre>
+<hr />
+<h2>Feature Engineering</h2>
+<pre><code class="language-python"># Binning
+df['age_group'] = pd.cut(df['age'], bins=[0,18,35,50,100],
+                          labels=['Youth','Adult','Middle','Senior'])
+
+# Log transformation (reduce skewness)
+df['log_salary'] = np.log1p(df['salary'])
+
+# Polynomial features
+from sklearn.preprocessing import PolynomialFeatures
+poly = PolynomialFeatures(degree=2, include_bias=False)
+X_poly = poly.fit_transform(X)
+
+# Date features
+df['days_since'] = (pd.Timestamp.now() - df['date']).dt.days
+df['is_weekend'] = df['date'].dt.dayofweek &gt;= 5
+
+# Text features
+df['text_length'] = df['text'].str.len()
+df['word_count'] = df['text'].str.split().str.len()
+</code></pre>
+<hr />
+<h2>SQL for Data Science</h2>
+<pre><code class="language-sql">-- Basic queries
+SELECT col1, col2 FROM table WHERE condition;
+SELECT DISTINCT col FROM table;
+SELECT col, COUNT(*) FROM table GROUP BY col HAVING COUNT(*) &gt; 5;
+
+-- Aggregations
+SELECT AVG(salary), MAX(salary), MIN(salary), COUNT(*) FROM employees;
+
+-- Joins
+SELECT a.name, b.dept
+FROM employees a
+INNER JOIN departments b ON a.dept_id = b.id;
+
+-- Subqueries
+SELECT * FROM employees
+WHERE salary &gt; (SELECT AVG(salary) FROM employees);
+
+-- Window functions
+SELECT name, salary,
+       RANK() OVER (PARTITION BY department ORDER BY salary DESC) as rank
+FROM employees;
+
+-- CTEs
+WITH dept_avg AS (
+    SELECT dept, AVG(salary) as avg_sal FROM employees GROUP BY dept
+)
+SELECT e.name, d.avg_sal
+FROM employees e JOIN dept_avg d ON e.dept = d.dept;
+</code></pre>
+<hr />
+<h2>Common Data Formats</h2>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Extension</th>
+<th>Pros</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CSV</strong></td>
+<td>.csv</td>
+<td>Simple, universal</td>
+<td>Tabular data exchange</td>
+</tr>
+<tr>
+<td><strong>JSON</strong></td>
+<td>.json</td>
+<td>Hierarchical, web-friendly</td>
+<td>APIs, config, NoSQL</td>
+</tr>
+<tr>
+<td><strong>Parquet</strong></td>
+<td>.parquet</td>
+<td>Fast, compressed, columnar</td>
+<td>Big data, analytics</td>
+</tr>
+<tr>
+<td><strong>Excel</strong></td>
+<td>.xlsx</td>
+<td>Familiar, multi-sheet</td>
+<td>Business reports</td>
+</tr>
+<tr>
+<td><strong>SQL</strong></td>
+<td>.db/.sql</td>
+<td>Structured, queryable</td>
+<td>Relational databases</td>
+</tr>
+<tr>
+<td><strong>HDF5</strong></td>
+<td>.h5</td>
+<td>Large datasets, fast I/O</td>
+<td>Scientific computing</td>
+</tr>
+<tr>
+<td><strong>Feather</strong></td>
+<td>.feather</td>
+<td>Fast pandas I/O</td>
+<td>Intermediate storage</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Tools &amp; Ecosystem</h2>
+<h3>Python Libraries</h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Libraries</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data Wrangling</strong></td>
+<td>Pandas, Polars, NumPy</td>
+</tr>
+<tr>
+<td><strong>Visualization</strong></td>
+<td>Matplotlib, Seaborn, Plotly, Altair</td>
+</tr>
+<tr>
+<td><strong>ML</strong></td>
+<td>Scikit-learn, XGBoost, LightGBM</td>
+</tr>
+<tr>
+<td><strong>Deep Learning</strong></td>
+<td>TensorFlow, PyTorch, Keras</td>
+</tr>
+<tr>
+<td><strong>NLP</strong></td>
+<td>NLTK, spaCy, Hugging Face Transformers</td>
+</tr>
+<tr>
+<td><strong>Big Data</strong></td>
+<td>PySpark, Dask, Vaex</td>
+</tr>
+<tr>
+<td><strong>Web Scraping</strong></td>
+<td>BeautifulSoup, Scrapy, Selenium</td>
+</tr>
+<tr>
+<td><strong>Experiment Tracking</strong></td>
+<td>MLflow, Weights &amp; Biases, DVC</td>
+</tr>
+</tbody>
+</table>
+<h3>Notebook Environments</h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Jupyter</strong></td>
+<td>Interactive notebooks (local)</td>
+</tr>
+<tr>
+<td><strong>Google Colab</strong></td>
+<td>Cloud notebooks with free GPU</td>
+</tr>
+<tr>
+<td><strong>Kaggle</strong></td>
+<td>Competitions + notebooks + datasets</td>
+</tr>
+<tr>
+<td><strong>VS Code</strong></td>
+<td>IDE with notebook support</td>
+</tr>
+</tbody>
+</table>
+<h3>BI &amp; Dashboard Tools</h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Tableau</strong></td>
+<td>Enterprise dashboards</td>
+</tr>
+<tr>
+<td><strong>Power BI</strong></td>
+<td>Microsoft ecosystem</td>
+</tr>
+<tr>
+<td><strong>Streamlit</strong></td>
+<td>Quick Python web apps</td>
+</tr>
+<tr>
+<td><strong>Gradio</strong></td>
+<td>ML model demos</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<blockquote>
+<p><strong>Last Updated:</strong> April 2026</p>
+</blockquote>
+</div>
+</body>
+</html>

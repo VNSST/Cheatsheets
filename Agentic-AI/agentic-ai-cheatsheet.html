@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Agentic AI Cheatsheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg: #0f172a;
+        --surface: #1e293b;
+        --primary: #38bdf8;
+        --text: #e2e8f0;
+        --border: #334155;
+    }
+    body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Inter', sans-serif;
+        line-height: 1.7;
+        margin: 0;
+        padding: 40px 20px;
+        display: flex;
+        justify-content: center;
+    }
+    .container {
+        background: var(--surface);
+        max-width: 900px;
+        width: 100%;
+        padding: 50px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    h1, h2, h3 {
+        color: var(--primary);
+    }
+    h1 { font-size: 2.5em; border-bottom: 2px solid var(--border); padding-bottom: 10px; }
+    h2 { font-size: 1.8em; margin-top: 40px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code {
+        font-family: 'Fira Code', monospace;
+        background: #000;
+        color: #a78bfa;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.9em;
+    }
+    pre {
+        background: #000 !important;
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+        border: 1px solid var(--border);
+    }
+    pre code {
+        background: transparent;
+        color: #e2e8f0;
+        padding: 0;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 0.95em;
+    }
+    th, td {
+        padding: 12px 15px;
+        border: 1px solid var(--border);
+        text-align: left;
+    }
+    th {
+        background: #0f172a;
+        color: var(--primary);
+    }
+    tr:nth-child(even) {
+        background: #151f2e;
+    }
+    tr:hover { background: #2dd4bf22; }
+    img { max-width: 100%; border-radius: 8px; }
+    blockquote {
+        border-left: 4px solid var(--primary);
+        margin: 0;
+        padding: 10px 20px;
+        background: rgba(56, 189, 248, 0.1);
+        border-radius: 0 8px 8px 0;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>🤖 Agentic AI — Cheatsheet</h1>
+<blockquote>
+<p>A comprehensive reference on AI agents — architectures, design patterns, tools, and frameworks.</p>
+</blockquote>
+<hr />
+<h2>Table of Contents</h2>
+<ol>
+<li><a href="#what-is-agentic-ai">What is Agentic AI?</a></li>
+<li><a href="#agents-vs-chatbots">Agents vs Chatbots</a></li>
+<li><a href="#core-agent-architecture">Core Agent Architecture</a></li>
+<li><a href="#agent-design-patterns">Agent Design Patterns</a></li>
+<li><a href="#reasoning-frameworks">Reasoning Frameworks</a></li>
+<li><a href="#tool-use--function-calling">Tool Use &amp; Function Calling</a></li>
+<li><a href="#memory-systems">Memory Systems</a></li>
+<li><a href="#planning--task-decomposition">Planning &amp; Task Decomposition</a></li>
+<li><a href="#multi-agent-systems">Multi-Agent Systems</a></li>
+<li><a href="#rag-in-agentic-systems">RAG in Agentic Systems</a></li>
+<li><a href="#evaluation--reliability">Evaluation &amp; Reliability</a></li>
+<li><a href="#frameworks--tools">Frameworks &amp; Tools</a></li>
+<li><a href="#real-world-applications">Real-World Applications</a></li>
+<li><a href="#best-practices">Best Practices</a></li>
+<li><a href="#glossary">Glossary</a></li>
+</ol>
+<hr />
+<h2>What is Agentic AI?</h2>
+<p>Agentic AI refers to AI systems that can <strong>autonomously plan, reason, use tools, and take actions</strong> to accomplish goals — going beyond simple question-answering to executing multi-step workflows.</p>
+<pre><code>Traditional LLM:   User → Prompt → Response → Done
+
+Agentic AI:        User → Goal
+                     ↓
+                   Agent: Plan → Reason → Act → Observe
+                     ↓          ↑__________________|
+                   Result (after multiple iterations)
+</code></pre>
+<h3>Key Properties of AI Agents</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Autonomy</strong></td>
+<td>Operate independently after receiving a goal</td>
+</tr>
+<tr>
+<td><strong>Reasoning</strong></td>
+<td>Think through problems step-by-step</td>
+</tr>
+<tr>
+<td><strong>Tool Use</strong></td>
+<td>Call APIs, search the web, execute code</td>
+</tr>
+<tr>
+<td><strong>Memory</strong></td>
+<td>Remember context across interactions</td>
+</tr>
+<tr>
+<td><strong>Planning</strong></td>
+<td>Break down complex tasks into sub-tasks</td>
+</tr>
+<tr>
+<td><strong>Adaptation</strong></td>
+<td>Adjust strategy based on results</td>
+</tr>
+<tr>
+<td><strong>Reflection</strong></td>
+<td>Evaluate own outputs and self-correct</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Agents vs Chatbots</h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Chatbot</th>
+<th>AI Agent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Interaction</strong></td>
+<td>Single turn Q&amp;A</td>
+<td>Multi-step autonomous execution</td>
+</tr>
+<tr>
+<td><strong>Tools</strong></td>
+<td>None or limited</td>
+<td>Multiple external tools</td>
+</tr>
+<tr>
+<td><strong>Planning</strong></td>
+<td>None</td>
+<td>Task decomposition &amp; planning</td>
+</tr>
+<tr>
+<td><strong>Memory</strong></td>
+<td>Conversation history only</td>
+<td>Short-term + long-term memory</td>
+</tr>
+<tr>
+<td><strong>Autonomy</strong></td>
+<td>Responds to prompts</td>
+<td>Initiates actions toward goals</td>
+</tr>
+<tr>
+<td><strong>Error Handling</strong></td>
+<td>Returns error message</td>
+<td>Retries, adjusts strategy</td>
+</tr>
+<tr>
+<td><strong>Scope</strong></td>
+<td>Answer questions</td>
+<td>Complete complex workflows</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Core Agent Architecture</h2>
+<h3>The Agent Loop</h3>
+<pre><code>┌──────────────────────────────────────────────┐
+│                 AGENT LOOP                   │
+│                                              │
+│  ┌─────────┐    ┌─────────┐    ┌─────────┐  │
+│  │ PERCEIVE│ →  │  REASON │ →  │   ACT   │  │
+│  │(observe │    │(think &amp; │    │(execute │  │
+│  │ results)│    │  plan)  │    │  tool)  │  │
+│  └────▲────┘    └─────────┘    └────┬────┘  │
+│       │                             │        │
+│       └─────────────────────────────┘        │
+│              (loop until done)               │
+└──────────────────────────────────────────────┘
+</code></pre>
+<h3>Core Components</h3>
+<pre><code>┌────────────────────────────────────────────┐
+│                AI AGENT                    │
+│                                            │
+│  ┌──────────────────────────────────────┐  │
+│  │          LLM (Brain)                 │  │
+│  │   Reasoning · Planning · Language    │  │
+│  └──────────────────────────────────────┘  │
+│                                            │
+│  ┌──────────┐ ┌──────────┐ ┌───────────┐  │
+│  │  Tools   │ │  Memory  │ │ Planning  │  │
+│  │ API calls│ │ Short &amp;  │ │ Task      │  │
+│  │ Code exec│ │ Long-term│ │ decompose │  │
+│  │ Search   │ │ Vector DB│ │ Prioritize│  │
+│  └──────────┘ └──────────┘ └───────────┘  │
+│                                            │
+│  ┌──────────────────────────────────────┐  │
+│  │       Orchestration Layer            │  │
+│  │  Prompt management · Error handling  │  │
+│  │  State management · Control flow     │  │
+│  └──────────────────────────────────────┘  │
+└────────────────────────────────────────────┘
+</code></pre>
+<hr />
+<h2>Agent Design Patterns</h2>
+<h3>1. ReAct (Reasoning + Acting)</h3>
+<p>The agent <strong>thinks</strong> (reason), <strong>acts</strong> (use a tool), then <strong>observes</strong> the result in a loop.</p>
+<pre><code>Thought: I need to find the current weather in Tokyo.
+Action: search_web(&quot;current weather Tokyo&quot;)
+Observation: Tokyo is currently 18°C, partly cloudy.
+Thought: Now I have the weather info. Let me formulate my response.
+Answer: The current weather in Tokyo is 18°C and partly cloudy.
+</code></pre>
+<h3>2. Plan-and-Execute</h3>
+<p>Separate planning from execution. Create a full plan first, then execute steps.</p>
+<pre><code>Goal: &quot;Write a blog post about AI trends&quot;
+
+Plan:
+  1. Research latest AI trends for 2026
+  2. Identify top 5 trends
+  3. Write introduction
+  4. Write section for each trend
+  5. Write conclusion
+  6. Review and polish
+
+Execute: step 1 → step 2 → ... → step 6
+</code></pre>
+<h3>3. Reflection / Self-Critique</h3>
+<p>Agent evaluates its own output and iteratively improves.</p>
+<pre><code>Generate → Critique → Revise → Critique → Final Output
+
+Step 1: Write initial code solution
+Step 2: Review — &quot;This doesn't handle edge case X&quot;
+Step 3: Revise code to handle edge case X
+Step 4: Review — &quot;Looks good now&quot;
+Step 5: Return final solution
+</code></pre>
+<h3>4. Tool-Use Agent</h3>
+<p>Agent decides which tool to use based on the task.</p>
+<pre><code>User: &quot;What's 15% tip on a $67.50 bill?&quot;
+
+Agent thinks: This is a math calculation. I'll use the calculator tool.
+Action: calculator(67.50 * 0.15)
+Result: $10.13
+</code></pre>
+<h3>5. Router / Dispatch</h3>
+<p>Routes requests to specialized sub-agents or workflows.</p>
+<pre><code>User Query → Router Agent
+  ├── &quot;Code question&quot;     → Code Agent
+  ├── &quot;Data analysis&quot;     → Data Agent
+  ├── &quot;Creative writing&quot;  → Writing Agent
+  └── &quot;General question&quot;  → General Agent
+</code></pre>
+<h3>6. Multi-Agent Collaboration</h3>
+<p>Multiple specialized agents work together on a task.</p>
+<pre><code>┌──────────┐     ┌──────────┐     ┌──────────┐
+│ Research │ →   │ Writer   │ →   │ Editor   │
+│  Agent   │     │  Agent   │     │  Agent   │
+└──────────┘     └──────────┘     └──────────┘
+  Gathers info    Drafts content   Reviews &amp; polishes
+</code></pre>
+<h3>Pattern Comparison</h3>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Strength</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ReAct</strong></td>
+<td>Flexible, general-purpose</td>
+<td>Dynamic tasks with tools</td>
+</tr>
+<tr>
+<td><strong>Plan-Execute</strong></td>
+<td>Structured, predictable</td>
+<td>Complex multi-step workflows</td>
+</tr>
+<tr>
+<td><strong>Reflection</strong></td>
+<td>Self-improving output</td>
+<td>Quality-critical tasks</td>
+</tr>
+<tr>
+<td><strong>Tool-Use</strong></td>
+<td>Extends LLM capabilities</td>
+<td>Tasks needing external data</td>
+</tr>
+<tr>
+<td><strong>Router</strong></td>
+<td>Efficient specialization</td>
+<td>Diverse query types</td>
+</tr>
+<tr>
+<td><strong>Multi-Agent</strong></td>
+<td>Division of labor</td>
+<td>Complex, multi-faceted tasks</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Reasoning Frameworks</h2>
+<h3>Chain-of-Thought (CoT)</h3>
+<p>Step-by-step reasoning before answering.</p>
+<pre><code>Q: A store has 45 apples. It sells 2/3 on Monday, then receives 20 on Tuesday.
+   How many apples does it have?
+
+Thought: Start with 45. Sell 2/3: 45 × 2/3 = 30 sold, 15 remain.
+         Receive 20: 15 + 20 = 35.
+Answer: 35 apples.
+</code></pre>
+<h3>Tree of Thoughts (ToT)</h3>
+<p>Explore multiple reasoning paths, evaluate, and select the best.</p>
+<pre><code>Problem → Path A → evaluate (score: 0.6)
+        → Path B → evaluate (score: 0.9) ← selected
+        → Path C → evaluate (score: 0.3)
+</code></pre>
+<h3>Self-Consistency</h3>
+<p>Generate multiple reasoning chains, take majority vote.</p>
+<pre><code>Attempt 1: ... → Answer: 42
+Attempt 2: ... → Answer: 42
+Attempt 3: ... → Answer: 38
+Majority vote → 42 ✓
+</code></pre>
+<h3>ReAct + Scratchpad</h3>
+<p>Combine reasoning with working memory.</p>
+<pre><code>Scratchpad:
+  - Found that revenue = $5.2M
+  - Found that costs = $3.1M
+  - Calculated profit = $5.2M - $3.1M = $2.1M
+  - Need to compare with last quarter ($1.8M)
+</code></pre>
+<hr />
+<h2>Tool Use &amp; Function Calling</h2>
+<h3>How Function Calling Works</h3>
+<pre><code>1. Define tools (functions) with names, descriptions, parameters
+2. LLM decides which tool to call and with what arguments
+3. System executes the function
+4. Result is fed back to the LLM
+5. LLM incorporates result into its response
+</code></pre>
+<h3>Defining Tools</h3>
+<pre><code class="language-python">tools = [
+    {
+        &quot;type&quot;: &quot;function&quot;,
+        &quot;function&quot;: {
+            &quot;name&quot;: &quot;get_weather&quot;,
+            &quot;description&quot;: &quot;Get current weather for a city&quot;,
+            &quot;parameters&quot;: {
+                &quot;type&quot;: &quot;object&quot;,
+                &quot;properties&quot;: {
+                    &quot;city&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;City name, e.g., 'London'&quot;
+                    },
+                    &quot;unit&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;enum&quot;: [&quot;celsius&quot;, &quot;fahrenheit&quot;],
+                        &quot;description&quot;: &quot;Temperature unit&quot;
+                    }
+                },
+                &quot;required&quot;: [&quot;city&quot;]
+            }
+        }
+    }
+]
+</code></pre>
+<h3>Common Tool Categories</h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Search</strong></td>
+<td>Web search, document search, vector search</td>
+</tr>
+<tr>
+<td><strong>Code Execution</strong></td>
+<td>Python REPL, shell commands, sandboxes</td>
+</tr>
+<tr>
+<td><strong>Data</strong></td>
+<td>SQL queries, API calls, file read/write</td>
+</tr>
+<tr>
+<td><strong>Communication</strong></td>
+<td>Email, Slack, calendar</td>
+</tr>
+<tr>
+<td><strong>Browser</strong></td>
+<td>Navigate, click, extract content</td>
+</tr>
+<tr>
+<td><strong>Math</strong></td>
+<td>Calculator, symbolic math</td>
+</tr>
+<tr>
+<td><strong>Media</strong></td>
+<td>Image generation, audio processing</td>
+</tr>
+</tbody>
+</table>
+<h3>MCP (Model Context Protocol)</h3>
+<p>An open standard by Anthropic for connecting AI agents to external tools and data sources.</p>
+<pre><code>┌─────────┐     MCP Protocol     ┌─────────────┐
+│  Agent  │  ←──────────────────→ │  MCP Server  │
+│ (Client)│   JSON-RPC over stdio │ (Tool Host)  │
+└─────────┘                       └─────────────┘
+
+MCP Server exposes:
+  - Tools (functions the agent can call)
+  - Resources (data the agent can read)
+  - Prompts (templates for the agent)
+</code></pre>
+<hr />
+<h2>Memory Systems</h2>
+<h3>Types of Memory</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Scope</th>
+<th>Implementation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Working Memory</strong></td>
+<td>Current conversation</td>
+<td>Context window / scratchpad</td>
+</tr>
+<tr>
+<td><strong>Short-Term</strong></td>
+<td>Current session</td>
+<td>Conversation buffer</td>
+</tr>
+<tr>
+<td><strong>Long-Term</strong></td>
+<td>Across sessions</td>
+<td>Vector DB, knowledge graph</td>
+</tr>
+<tr>
+<td><strong>Episodic</strong></td>
+<td>Past experiences</td>
+<td>Stored interaction logs</td>
+</tr>
+<tr>
+<td><strong>Semantic</strong></td>
+<td>Facts &amp; knowledge</td>
+<td>Embeddings in vector store</td>
+</tr>
+<tr>
+<td><strong>Procedural</strong></td>
+<td>How to do things</td>
+<td>Stored tool-use patterns</td>
+</tr>
+</tbody>
+</table>
+<h3>Memory Implementation</h3>
+<pre><code class="language-python"># Short-term: Conversation buffer
+memory = ConversationBufferMemory()
+
+# Sliding window (last N messages)
+memory = ConversationBufferWindowMemory(k=10)
+
+# Summary memory (summarize old messages)
+memory = ConversationSummaryMemory(llm=llm)
+
+# Long-term: Vector store
+from langchain.memory import VectorStoreRetrieverMemory
+memory = VectorStoreRetrieverMemory(retriever=vectorstore.as_retriever())
+</code></pre>
+<h3>Memory Management Strategies</h3>
+<pre><code>Context Window Management:
+  1. Sliding window — keep last N messages
+  2. Summarization — compress old messages
+  3. Retrieval — fetch relevant past context on demand
+  4. Hierarchical — recent in full + older as summaries
+</code></pre>
+<hr />
+<h2>Planning &amp; Task Decomposition</h2>
+<h3>Decomposition Strategies</h3>
+<pre><code>Goal: &quot;Build a data dashboard for sales data&quot;
+
+Hierarchical Decomposition:
+├── 1. Data Pipeline
+│   ├── 1.1 Connect to sales database
+│   ├── 1.2 Extract relevant tables
+│   └── 1.3 Clean and transform data
+├── 2. Analysis
+│   ├── 2.1 Compute KPIs (revenue, growth, churn)
+│   ├── 2.2 Identify trends
+│   └── 2.3 Segment by region
+├── 3. Visualization
+│   ├── 3.1 Create charts for each KPI
+│   ├── 3.2 Build interactive filters
+│   └── 3.3 Design layout
+└── 4. Deployment
+    ├── 4.1 Set up hosting
+    └── 4.2 Configure auto-refresh
+</code></pre>
+<h3>Dynamic Re-Planning</h3>
+<pre><code>Original Plan: A → B → C → D
+
+After step B fails:
+  Agent reflects: &quot;Step B failed because API is down.&quot;
+  New Plan: A → B' (alternative approach) → C → D
+
+After step C reveals new info:
+  Agent reflects: &quot;Step C showed we also need E.&quot;
+  New Plan: A → B' → C → E → D
+</code></pre>
+<hr />
+<h2>Multi-Agent Systems</h2>
+<h3>Common Architectures</h3>
+<h4>1. Sequential Pipeline</h4>
+<pre><code>Agent A → Agent B → Agent C → Final Output
+(research)  (write)   (review)
+</code></pre>
+<h4>2. Hierarchical (Manager-Worker)</h4>
+<pre><code>        ┌───────────┐
+        │  Manager  │
+        │  Agent    │
+        └─────┬─────┘
+     ┌────────┼────────┐
+     ▼        ▼        ▼
+┌────────┐┌────────┐┌────────┐
+│Worker A││Worker B││Worker C│
+└────────┘└────────┘└────────┘
+</code></pre>
+<h4>3. Debate / Adversarial</h4>
+<pre><code>┌──────────┐        ┌──────────┐
+│ Agent A  │ ←───→  │ Agent B  │
+│(Proposer)│ debate │ (Critic) │
+└──────────┘        └──────────┘
+       ↓
+  ┌──────────┐
+  │  Judge   │  → Final Decision
+  └──────────┘
+</code></pre>
+<h4>4. Collaborative Swarm</h4>
+<pre><code>┌────┐  ┌────┐  ┌────┐
+│ A  │──│ B  │──│ C  │
+└────┘  └────┘  └────┘
+  │  \   │  \   │
+┌────┐ ┌────┐ ┌────┐
+│ D  │─│ E  │─│ F  │
+└────┘ └────┘ └────┘
+Agents communicate peer-to-peer
+</code></pre>
+<h3>Multi-Agent Frameworks</h3>
+<table>
+<thead>
+<tr>
+<th>Framework</th>
+<th>Key Feature</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CrewAI</strong></td>
+<td>Role-based agent teams</td>
+<td>Collaborative workflows</td>
+</tr>
+<tr>
+<td><strong>AutoGen</strong></td>
+<td>Conversational multi-agent</td>
+<td>Research, coding tasks</td>
+</tr>
+<tr>
+<td><strong>LangGraph</strong></td>
+<td>Graph-based agent orchestration</td>
+<td>Complex stateful workflows</td>
+</tr>
+<tr>
+<td><strong>Swarm</strong></td>
+<td>Lightweight agent handoffs</td>
+<td>Simple multi-agent flows</td>
+</tr>
+<tr>
+<td><strong>Agency Swarm</strong></td>
+<td>Genesis-based agent creation</td>
+<td>Business automation</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>RAG in Agentic Systems</h2>
+<h3>Agentic RAG vs Naive RAG</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Naive RAG</th>
+<th>Agentic RAG</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Retrieval</strong></td>
+<td>Single query → retrieve</td>
+<td>Multiple queries, iterative</td>
+</tr>
+<tr>
+<td><strong>Reasoning</strong></td>
+<td>None</td>
+<td>Decides what to retrieve</td>
+</tr>
+<tr>
+<td><strong>Re-ranking</strong></td>
+<td>Basic similarity</td>
+<td>LLM-guided relevance scoring</td>
+</tr>
+<tr>
+<td><strong>Query Rewrite</strong></td>
+<td>None</td>
+<td>Reformulates for better results</td>
+</tr>
+<tr>
+<td><strong>Source Selection</strong></td>
+<td>Fixed</td>
+<td>Dynamically selects sources</td>
+</tr>
+<tr>
+<td><strong>Verification</strong></td>
+<td>None</td>
+<td>Cross-checks retrieved info</td>
+</tr>
+</tbody>
+</table>
+<h3>Agentic RAG Pattern</h3>
+<pre><code>User Query → Agent
+  ├── Analyze query
+  ├── Decide which sources to search
+  ├── Search Source A (vector DB)
+  ├── Search Source B (web search)
+  ├── Evaluate relevance of results
+  ├── If insufficient → reformulate query → search again
+  ├── Synthesize information
+  └── Generate grounded response with citations
+</code></pre>
+<hr />
+<h2>Evaluation &amp; Reliability</h2>
+<h3>Agent Evaluation Dimensions</h3>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Measures</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Correctness</strong></td>
+<td>Does the agent produce the right answer?</td>
+</tr>
+<tr>
+<td><strong>Efficiency</strong></td>
+<td>How many steps / tokens / time to complete?</td>
+</tr>
+<tr>
+<td><strong>Reliability</strong></td>
+<td>Does it succeed consistently?</td>
+</tr>
+<tr>
+<td><strong>Safety</strong></td>
+<td>Does it avoid harmful actions?</td>
+</tr>
+<tr>
+<td><strong>Tool Use</strong></td>
+<td>Does it select the right tools correctly?</td>
+</tr>
+<tr>
+<td><strong>Robustness</strong></td>
+<td>How does it handle errors and edge cases?</td>
+</tr>
+</tbody>
+</table>
+<h3>Common Failure Modes</h3>
+<table>
+<thead>
+<tr>
+<th>Failure</th>
+<th>Description</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Infinite loops</strong></td>
+<td>Agent repeats failed actions</td>
+<td>Max iteration limits</td>
+</tr>
+<tr>
+<td><strong>Wrong tool use</strong></td>
+<td>Calls incorrect tool or wrong params</td>
+<td>Better tool descriptions</td>
+</tr>
+<tr>
+<td><strong>Hallucination</strong></td>
+<td>Invents data instead of searching</td>
+<td>Mandatory tool use policies</td>
+</tr>
+<tr>
+<td><strong>Goal drift</strong></td>
+<td>Wanders from original objective</td>
+<td>Goal tracking, checkpoints</td>
+</tr>
+<tr>
+<td><strong>Error cascading</strong></td>
+<td>One mistake compounds across steps</td>
+<td>Validation at each step</td>
+</tr>
+<tr>
+<td><strong>Over-planning</strong></td>
+<td>Spends too long planning, never acts</td>
+<td>Planning time limits</td>
+</tr>
+</tbody>
+</table>
+<h3>Reliability Techniques</h3>
+<pre><code>1. Structured outputs   — Force JSON/schema responses
+2. Retry with backoff   — Retry failed tool calls
+3. Guardrails           — Input/output validation
+4. Human-in-the-loop    — Approval for critical actions
+5. Checkpointing        — Save state for recovery
+6. Fallback chains      — Alternative paths on failure
+7. Observability        — Log every step for debugging
+</code></pre>
+<hr />
+<h2>Frameworks &amp; Tools</h2>
+<h3>Agent Frameworks</h3>
+<table>
+<thead>
+<tr>
+<th>Framework</th>
+<th>Language</th>
+<th>Key Feature</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>LangChain</strong></td>
+<td>Python</td>
+<td>Comprehensive agent toolkit</td>
+</tr>
+<tr>
+<td><strong>LangGraph</strong></td>
+<td>Python</td>
+<td>Stateful graph-based agents</td>
+</tr>
+<tr>
+<td><strong>CrewAI</strong></td>
+<td>Python</td>
+<td>Multi-agent role-based teams</td>
+</tr>
+<tr>
+<td><strong>AutoGen</strong></td>
+<td>Python</td>
+<td>Conversational multi-agent</td>
+</tr>
+<tr>
+<td><strong>Semantic Kernel</strong></td>
+<td>C#/Py</td>
+<td>Microsoft's AI orchestration</td>
+</tr>
+<tr>
+<td><strong>Haystack</strong></td>
+<td>Python</td>
+<td>Production-ready NLP pipelines</td>
+</tr>
+<tr>
+<td><strong>Smolagents</strong></td>
+<td>Python</td>
+<td>HuggingFace lightweight agents</td>
+</tr>
+<tr>
+<td><strong>Google ADK</strong></td>
+<td>Python</td>
+<td>Google's Agent Development Kit</td>
+</tr>
+</tbody>
+</table>
+<h3>Orchestration &amp; Infrastructure</h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>LangSmith</strong></td>
+<td>Agent observability &amp; tracing</td>
+</tr>
+<tr>
+<td><strong>Weights &amp; Biases</strong></td>
+<td>Experiment tracking</td>
+</tr>
+<tr>
+<td><strong>Ollama</strong></td>
+<td>Run LLMs locally</td>
+</tr>
+<tr>
+<td><strong>vLLM</strong></td>
+<td>High-throughput LLM serving</td>
+</tr>
+<tr>
+<td><strong>Modal / Fly.io</strong></td>
+<td>Serverless deployment</td>
+</tr>
+<tr>
+<td><strong>Vercel AI SDK</strong></td>
+<td>Frontend AI integration</td>
+</tr>
+</tbody>
+</table>
+<h3>Vector Databases</h3>
+<table>
+<thead>
+<tr>
+<th>Database</th>
+<th>Key Feature</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pinecone</strong></td>
+<td>Managed, scalable</td>
+</tr>
+<tr>
+<td><strong>Weaviate</strong></td>
+<td>Open-source, hybrid search</td>
+</tr>
+<tr>
+<td><strong>ChromaDB</strong></td>
+<td>Simple, developer-friendly</td>
+</tr>
+<tr>
+<td><strong>Qdrant</strong></td>
+<td>High performance, filtering</td>
+</tr>
+<tr>
+<td><strong>FAISS</strong></td>
+<td>Facebook's similarity search library</td>
+</tr>
+<tr>
+<td><strong>Milvus</strong></td>
+<td>Open-source, distributed</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Real-World Applications</h2>
+<table>
+<thead>
+<tr>
+<th>Domain</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Software Dev</strong></td>
+<td>Code generation, debugging, PR review agents</td>
+</tr>
+<tr>
+<td><strong>Customer Support</strong></td>
+<td>Multi-step issue resolution, ticket routing</td>
+</tr>
+<tr>
+<td><strong>Research</strong></td>
+<td>Literature review, data analysis agents</td>
+</tr>
+<tr>
+<td><strong>Data Analysis</strong></td>
+<td>SQL query generation, dashboard creation</td>
+</tr>
+<tr>
+<td><strong>Sales/Marketing</strong></td>
+<td>Lead research, content generation, outreach</td>
+</tr>
+<tr>
+<td><strong>Legal</strong></td>
+<td>Contract review, document analysis</td>
+</tr>
+<tr>
+<td><strong>Healthcare</strong></td>
+<td>Symptom triage, report summarization</td>
+</tr>
+<tr>
+<td><strong>Finance</strong></td>
+<td>Financial analysis, risk assessment</td>
+</tr>
+<tr>
+<td><strong>DevOps</strong></td>
+<td>Incident response, log analysis</td>
+</tr>
+<tr>
+<td><strong>Education</strong></td>
+<td>Personalized tutoring, curriculum design</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Best Practices</h2>
+<h3>Agent Design</h3>
+<pre><code>✅ Start simple — single agent before multi-agent
+✅ Define clear tool descriptions with examples
+✅ Implement human-in-the-loop for critical actions
+✅ Set max iteration limits to prevent infinite loops
+✅ Use structured outputs for reliable parsing
+✅ Log every step for debugging and observability
+✅ Test with diverse inputs and edge cases
+✅ Implement graceful error handling and fallbacks
+
+❌ Don't give agents too many tools at once
+❌ Don't skip input validation
+❌ Don't trust agent output without verification
+❌ Don't deploy without guardrails
+❌ Don't ignore cost — agent loops can be expensive
+</code></pre>
+<h3>Cost Optimization</h3>
+<pre><code>1. Use cheaper models for simple reasoning steps
+2. Cache frequent tool call results
+3. Limit max iterations and token budgets
+4. Use smaller context windows when possible
+5. Batch similar operations
+6. Monitor and alert on cost spikes
+</code></pre>
+<h3>Security Considerations</h3>
+<pre><code>1. Sandbox code execution environments
+2. Validate all tool inputs — prevent injection attacks
+3. Limit agent permissions (principle of least privilege)
+4. Audit trail for all agent actions
+5. Rate limiting on tool calls
+6. Never expose raw credentials to agent context
+7. Content filtering on inputs and outputs
+</code></pre>
+<hr />
+<h2>Glossary</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Agent</strong></td>
+<td>AI system that autonomously reasons and acts</td>
+</tr>
+<tr>
+<td><strong>Tool</strong></td>
+<td>External function an agent can call</td>
+</tr>
+<tr>
+<td><strong>Function Calling</strong></td>
+<td>LLM generating structured tool invocations</td>
+</tr>
+<tr>
+<td><strong>ReAct</strong></td>
+<td>Reasoning + Acting loop pattern</td>
+</tr>
+<tr>
+<td><strong>Orchestration</strong></td>
+<td>Managing agent execution flow</td>
+</tr>
+<tr>
+<td><strong>Guardrails</strong></td>
+<td>Safety constraints on agent behavior</td>
+</tr>
+<tr>
+<td><strong>Human-in-the-loop</strong></td>
+<td>Human approval step in agent workflows</td>
+</tr>
+<tr>
+<td><strong>MCP</strong></td>
+<td>Model Context Protocol for tool integration</td>
+</tr>
+<tr>
+<td><strong>Scratchpad</strong></td>
+<td>Working memory for intermediate reasoning</td>
+</tr>
+<tr>
+<td><strong>Grounding</strong></td>
+<td>Anchoring responses to verified data</td>
+</tr>
+<tr>
+<td><strong>Handoff</strong></td>
+<td>Transferring task from one agent to another</td>
+</tr>
+<tr>
+<td><strong>Observation</strong></td>
+<td>Result from a tool call fed back to the agent</td>
+</tr>
+<tr>
+<td><strong>State</strong></td>
+<td>Current status and context of the agent</td>
+</tr>
+<tr>
+<td><strong>Trajectory</strong></td>
+<td>Sequence of thought-action-observation steps</td>
+</tr>
+<tr>
+<td><strong>Hallucination</strong></td>
+<td>Agent fabricating info instead of using tools</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<blockquote>
+<p><strong>Last Updated:</strong> April 2026</p>
+</blockquote>
+</div>
+</body>
+</html>
